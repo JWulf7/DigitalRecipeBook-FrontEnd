@@ -2,6 +2,11 @@ To startup frontend:
 run commands:
     - npm run dev
 
+Can view front end here:
+    http://localhost:3000/
+
+Terminate server run: Ctrl + c
+
 
 # React + Vite
 
