@@ -22,7 +22,73 @@ const ListRecipeComponent = () => {
                     name: "banana"
                 }
             ],
-            
+            method: ["Mixing", "Baking"],
+            servings: 8,
+            prepTime: "15m",
+            activeTime: "20m",
+            totalTime: "1h",
+            equipment: [
+                {
+                    name: "mixing bowl"
+                },
+                {
+                    name: "loaf pan"
+                },
+                {
+                    name: "oven"
+                }
+            ],
+            pairings: [
+                {
+                    id: 47,
+                    name: "Vanilla Bourbon Pecan Butter"
+                }
+            ],
+            notes: ["Don't overmix batter, a little scarce flour should be visible when putting into pan"],
+            rating: 5,
+            author: "Bobby Flay",
+            foodOrDrink: "food",
+            pictures: ["Picture1 of Banana bread"],
+            oftenMadeAlongside: [
+                {
+                    id: 47,
+                    name: "Vanilla Bourbon Pecan Butter"
+                }
+            ],
+            seasonality: "Any",
+            tags: ["Quickbread"],
+            pairsWith: [
+                {
+                    id: 47,
+                    name: "Vanilla Bourbon Pecan Butter"
+                }
+            ],
+            notesInPlaceCollapse: true,
+            origin: "Brunch With Bobby",
+            easeLevel: "EASYMEDIUM",
+            meal: "ANY",
+            category: "Quickbread",
+            howToStore: "wrap tightly in plastic wrap",
+            howToReheat: "can slice and toast in toaster or in saute pan",
+            howToFreeze: "wrap tightly in plastic wrap",
+            howToUseRepurposeLeftoversIdeas: ["french toast", "can make into a bread pudding"],
+            dishesThatAlsoUseLeftoverIngredients: [
+                {
+                    id: 17,
+                    name: "Pecan stuff"
+                }
+            ],
+            mealAffinities: [
+                {
+                    id: 14,
+                    name: "some recipe?"
+                }
+            ],
+            lastCooked: "2023-12-12T14:59:11.9416134",
+            created: "2023-10-10T12:59:11.9416134",
+            allDatesCooked: ["2023-12-12T14:59:11.9416134"],
+            allDatesUpdated: ["2023-12-12T14:59:11.9416134"],
+
         },
         {   id: 1,
             name: "Pizza Dough",
@@ -42,6 +108,82 @@ const ListRecipeComponent = () => {
                     name: "banana"
                 }
             ],
+            method: ["Mixing", "Kneading", "Proofing", "Baking"],
+            servings: 2,
+            prepTime: "2d",
+            activeTime: "1h",
+            totalTime: "2d",
+            equipment: [
+                {
+                    name: "stand mixer"
+                },
+                {
+                    name: "mixing bowl"
+                },
+                {
+                    name: "proofing container"
+                },
+                {
+                    name: "oven"
+                },
+                {
+                    name: "pizza steel"
+                }
+            ],
+            pairings: [
+                {
+                    id: 30,
+                    name: "Alfredo Sauce"
+                }
+            ],
+            notes: ["try to only touch pizza dough 1-3 touches after removing from proofing container", "pizza is good!"],
+            rating: 5,
+            author: "Jonathan Wulf",
+            foodOrDrink: "food",
+            pictures: ["picture1 of pizza dough"],
+            oftenMadeAlongside: [
+                {
+                    id: 30,
+                    name: "Alfredo Sauce"
+                },
+                {
+                    id: 25,
+                    name: "Pork Ragu"
+                }
+            ],
+            seasonality: "Any",
+            tags: ["Italian", "Pizza", "Neopolitan", "Sourdough"],
+            pairsWith: [
+                {
+                    id: 30,
+                    name: "Alfredo Sauce"
+                }
+            ],
+            notesInPlaceCollapse: false,
+            origin: "Original Recipe",
+            easeLevel: "MEDIUM",
+            meal: "ANY",
+            category: "Yeastbread",
+            howToStore: "can put leftover pieces in tupperware",
+            howToReheat: "325* oven, 4 mins",
+            howToFreeze: "maybe don't want to freeze",
+            howToUseRepurposeLeftoversIdeas: ["don't know"],
+            dishesThatAlsoUseLeftoverIngredients: [
+                {
+                    id: 20,
+                    name: "Shrimp Fettucini Alfredo"
+                }
+            ],
+            mealAffinities: [
+                {
+                    id: 21,
+                    name: "Sourdough Naan Bread"
+                }
+            ],
+            lastCooked: null,
+            created: "2023-12-12T14:59:11.9416134",
+            allDatesCooked: ["2023-12-12T14:59:11.9416134", "2022-10-12T14:59:11.9416134"],
+            allDatesUpdated: ["2023-12-12T14:59:11.9416134", "2022-10-12T14:59:11.9416134"],
             
             /*
             id: 0,
@@ -110,30 +252,6 @@ const ListRecipeComponent = () => {
                     <th>Description</th>
                     <th>Version</th>
                     <th>Ingredients</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    dummyData.map(recipe =>
-                        <tr key={recipe.id}>
-                            <td>{recipe.id}</td>
-                            <td>{recipe.name}</td>
-                            <td>{recipe.description}</td>
-                            <td>{recipe.version}</td>
-                            
-                            <td>{recipe.ingredients.values.toString()}</td>
-                        </tr>)
-                }
-
-            </tbody>
-        </table>
-    </div>
-  )
-}
-
-{/*
-
                     <th>Method</th>
                     <th>Servings</th>
                     <th>Prep Time</th>
@@ -165,27 +283,34 @@ const ListRecipeComponent = () => {
                     <th>Created</th>
                     <th>All Dates Cooked</th>
                     <th>All Dates Updated</th>
-
-
-
-                    
-                            <td>{recipe.method}</td>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    dummyData.map(recipe =>
+                        <tr key={recipe.id}>
+                            <td>{recipe.id}</td>
+                            <td>{recipe.name}</td>
+                            <td>{recipe.description}</td>
+                            <td>{recipe.version}</td>
+                            <td><ul>{recipe.ingredients.map(ingredient => <li>{ingredient.name}</li>)}</ul></td>
+                            <td><ul>{recipe.method.map(technique => <li>{technique}</li>)}</ul></td>
                             <td>{recipe.servings}</td>
                             <td>{recipe.prepTime}</td>
                             <td>{recipe.activeTime}</td>
                             <td>{recipe.totalTime}</td>
-                            <td>{recipe.equipment}</td>
-                            <td>{recipe.pairings}</td>
-                            <td>{recipe.notes}</td>
+                            <td><ul>{recipe.equipment.map(equip => <li>{equip.name}</li>)}</ul></td>
+                            <td><ul>{recipe.pairings.map(pairing => <li>{pairing.name}</li>)}</ul></td>
+                            <td><ul>{recipe.notes.map(note => <li>{note}</li>)}</ul></td>
                             <td>{recipe.rating}</td>
                             <td>{recipe.author}</td>
                             <td>{recipe.foodOrDrink}</td>
-                            <td>{recipe.pictures}</td>
-                            <td>{recipe.oftenMadeAlongside}</td>
+                            <td><ul>{recipe.pictures.map(pic => <li>{pic}</li>)}</ul></td>
+                            <td><ul>{recipe.oftenMadeAlongside.map(alongside => <li>{alongside.name}</li>)}</ul></td>
                             <td>{recipe.seasonality}</td>
-                            <td>{recipe.tags}</td>
-                            <td>{recipe.pairsWith}</td>
-                            <td>{recipe.notesInPlaceCollapse}</td>
+                            <td><ul>{recipe.tags.map(tag => <li>{tag}</li>)}</ul></td>
+                            <td><ul>{recipe.pairsWith.map(pair => <li>{pair.name}</li>)}</ul></td>
+                            <td>{recipe.notesInPlaceCollapse.valueOf}</td>
                             <td>{recipe.origin}</td>
                             <td>{recipe.easeLevel}</td>
                             <td>{recipe.meal}</td>
@@ -193,13 +318,58 @@ const ListRecipeComponent = () => {
                             <td>{recipe.howToStore}</td>
                             <td>{recipe.howToReheat}</td>
                             <td>{recipe.howToFreeze}</td>
-                            <td>{recipe.howToUseRepurposeLeftoversIdeas}</td>
-                            <td>{recipe.dishesThatAlsoUseLeftoverIngredients}</td>
-                            <td>{recipe.mealAffinities}</td>
+                            <td><ul>{recipe.howToUseRepurposeLeftoversIdeas.map(idea => <li>{idea}</li>)}</ul></td>
+                            <td><ul>{recipe.dishesThatAlsoUseLeftoverIngredients.map(dish => <li>{dish.name}</li>)}</ul></td>
+                            <td><ul>{recipe.mealAffinities.map(meal => <li>{meal.name}</li>)}</ul></td>
                             <td>{recipe.lastCooked}</td>
                             <td>{recipe.created}</td>
-                            <td>{recipe.allDatesCooked}</td>
-                            <td>{recipe.allDatesUpdated}</td>
+                            <td><ul>{recipe.allDatesCooked.map(date => <li>{date}</li>)}</ul></td>
+                            <td><ul>{recipe.allDatesUpdated.map(date => <li>{date}</li>)}</ul></td>
+                        </tr>)
+                }
+
+            </tbody>
+        </table>
+    </div>
+  )
+}
+
+{/*
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+
+
+
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
 */}
 
 export default ListRecipeComponent
