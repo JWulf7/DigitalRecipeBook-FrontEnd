@@ -2,13 +2,16 @@ import React from 'react'
 
 const ListRecipeComponent = () => {
 
+
+    
+
     const dummyData = [
         {
             id: 0,
             name: "Banana Bread",
             description: "Quick bread of ripe bananas",
             version: 1.0,
-            ingredients: [
+            /*ingredients: [
                 {
                     name: "brown sugar"
                 },
@@ -21,12 +24,18 @@ const ListRecipeComponent = () => {
                 {
                     name: "banana"
                 }
-            ],
+            ],*/
+            ingredients: {
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=flour]]]": "2 c.",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=banana]]]": "3",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=baking powder]]]": "1/4 tsp",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=brown sugar]]]": "1/4 c."
+            },
             method: ["Mixing", "Baking"],
             servings: 8,
-            prepTime: "15m",
-            activeTime: "20m",
-            totalTime: "1h",
+            prepTime: "PT15M",
+            activeTime: "PT15M",
+            totalTime: "PT1H15M",
             equipment: [
                 {
                     name: "mixing bowl"
@@ -40,7 +49,6 @@ const ListRecipeComponent = () => {
             ],
             pairings: [
                 {
-                    id: 47,
                     name: "Vanilla Bourbon Pecan Butter"
                 }
             ],
@@ -48,10 +56,9 @@ const ListRecipeComponent = () => {
             rating: 5,
             author: "Bobby Flay",
             foodOrDrink: "food",
-            pictures: ["Picture1 of Banana bread"],
+            pictures: [],
             oftenMadeAlongside: [
                 {
-                    id: 47,
                     name: "Vanilla Bourbon Pecan Butter"
                 }
             ],
@@ -59,7 +66,6 @@ const ListRecipeComponent = () => {
             tags: ["Quickbread"],
             pairsWith: [
                 {
-                    id: 47,
                     name: "Vanilla Bourbon Pecan Butter"
                 }
             ],
@@ -94,25 +100,17 @@ const ListRecipeComponent = () => {
             name: "Pizza Dough",
             description: "sourdough pizza dough",
             version: 1.0,
-            ingredients: [
-                {
-                    name: "brown sugar"
-                },
-                {
-                    name: "baking powder"
-                },
-                {
-                    name: "flour"
-                },
-                {
-                    name: "banana"
-                }
-            ],
+            ingredients: {
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=flour]]]": "200 g.",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=sourdough starter]]]": "80 g.",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=olive oil]]]": "9 g.",
+                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=honey]]]": "4 g."
+            },
             method: ["Mixing", "Kneading", "Proofing", "Baking"],
             servings: 2,
-            prepTime: "2d",
-            activeTime: "1h",
-            totalTime: "2d",
+            prepTime: "P3DT4H",
+            activeTime: "PT1H",
+            totalTime: "P5D",
             equipment: [
                 {
                     name: "stand mixer"
@@ -293,12 +291,16 @@ const ListRecipeComponent = () => {
                             <td>{recipe.name}</td>
                             <td>{recipe.description}</td>
                             <td>{recipe.version}</td>
-                            <td><ul>{recipe.ingredients.map(ingredient => <li>{ingredient.name}</li>)}</ul></td>
+                            {/*<td><ul>{recipe.ingredients.entries.map([k,v] => <li>{this.v} {this.v}</li>)}</ul></td>*/}
+                            {/*<td>{parseIngredients(recipe.ingredients)}</td>*/}
+                            {/*<td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>*/}
+                            <td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>
+                            {/*<td><ul>{recipe.ingredients.map(ingredient => <li>{ingredient.name}</li>)}</ul></td>*/}
                             <td><ul>{recipe.method.map(technique => <li>{technique}</li>)}</ul></td>
                             <td>{recipe.servings}</td>
-                            <td>{recipe.prepTime}</td>
-                            <td>{recipe.activeTime}</td>
-                            <td>{recipe.totalTime}</td>
+                            <td>{convertDuration(recipe.prepTime)}</td>
+                            <td>{convertDuration(recipe.activeTime)}</td>
+                            <td>{convertDuration(recipe.totalTime)}</td>
                             <td><ul>{recipe.equipment.map(equip => <li>{equip.name}</li>)}</ul></td>
                             <td><ul>{recipe.pairings.map(pairing => <li>{pairing.name}</li>)}</ul></td>
                             <td><ul>{recipe.notes.map(note => <li>{note}</li>)}</ul></td>
@@ -332,6 +334,90 @@ const ListRecipeComponent = () => {
         </table>
     </div>
   )
+
+  function parseIngredients(obj) {
+    var newObj = {};
+    Object.keys(obj).forEach(key => {
+    newObj[getIngredientName(key)] = obj[key]
+    })
+
+    console.log(newObj);
+    console.log(Object.entries(newObj));
+    return Object.entries(newObj);
+  }
+
+  function getIngredientName(origString) {
+    let newStr = "";
+    return newStr = origString.slice(81,-3);
+  }  
+
+  function convertDuration(t){ 
+    //dividing period from time
+    var x = t.split('T'),
+        duration = '',
+        time = {},
+        period = {},
+        //just shortcuts
+        s = 'string',
+        v = 'variables',
+        l = 'letters',
+        // store the information about ISO8601 duration format and the divided strings
+        d = {
+            period: {
+                string: x[0].substring(1,x[0].length),
+                len: 4,
+                // years, months, weeks, days
+                letters: ['Y', 'M', 'W', 'D'],
+                variables: {}
+            },
+            time: {
+                string: x[1],
+                len: 3,
+                // hours, minutes, seconds
+                letters: ['H', 'M', 'S'],
+                variables: {}
+            }
+        };
+    //in case the duration is a multiple of one day
+    if (!d.time.string) {
+        d.time.string = '';
+    }
+
+    for (var i in d) {
+        var len = d[i].len;
+        for (var j = 0; j < len; j++) {
+            d[i][s] = d[i][s].split(d[i][l][j]);
+            if (d[i][s].length>1) {
+                d[i][v][d[i][l][j]] = parseInt(d[i][s][0], 10);
+                d[i][s] = d[i][s][1];
+            } else {
+                d[i][v][d[i][l][j]] = 0;
+                d[i][s] = d[i][s][0];
+            }
+        }
+    } 
+    period = d.period.variables;
+    time = d.time.variables;
+    time.H +=   24 * period.D + 
+                            24 * 7 * period.W +
+                            24 * 7 * 4 * period.M + 
+                            24 * 7 * 4 * 12 * period.Y;
+
+    if (time.H) {
+        duration = time.H + ':';
+        if (time.M < 10) {
+            time.M = '0' + time.M;
+        }
+    }
+
+    if (time.S < 10) {
+        time.S = '0' + time.S;
+    }
+
+    duration += time.M + ':' + time.S;
+    return duration;
+}
+
 }
 
 {/*
