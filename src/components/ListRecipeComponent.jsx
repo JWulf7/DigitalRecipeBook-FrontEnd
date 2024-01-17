@@ -1,35 +1,32 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import { listRecipes } from '../services/RecipeService'
 
 const ListRecipeComponent = () => {
 
+    const [recipes, setRecipes] = useState([])
+
+    useEffect(() => {
+        listRecipes().then((Response) => {
+            setRecipes(Response.data);
+        }).catch(error => {
+            console.error(error);
+        })
+
+    }, [])
 
     
-
+/*
     const dummyData = [
         {
             id: 0,
             name: "Banana Bread",
             description: "Quick bread of ripe bananas",
             version: 1.0,
-            /*ingredients: [
-                {
-                    name: "brown sugar"
-                },
-                {
-                    name: "baking powder"
-                },
-                {
-                    name: "flour"
-                },
-                {
-                    name: "banana"
-                }
-            ],*/
             ingredients: {
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=flour]]]": "2 c.",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=banana]]]": "3",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=baking powder]]]": "1/4 tsp",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=brown sugar]]]": "1/4 c."
+                "flour": "2 c.",
+                "banana": "3",
+                "baking powder": "1/4 tsp",
+                "brown sugar": "1/4 c."
             },
             method: ["Mixing", "Baking"],
             servings: 8,
@@ -55,7 +52,7 @@ const ListRecipeComponent = () => {
             notes: ["Don't overmix batter, a little scarce flour should be visible when putting into pan"],
             rating: 5,
             author: "Bobby Flay",
-            foodOrDrink: "food",
+            foodOrDrink: "FOOD",
             pictures: [],
             oftenMadeAlongside: [
                 {
@@ -72,21 +69,27 @@ const ListRecipeComponent = () => {
             notesInPlaceCollapse: true,
             origin: "Brunch With Bobby",
             easeLevel: "EASYMEDIUM",
-            meal: "ANY",
-            category: "Quickbread",
+            meal: [
+                "BRUNCH",
+                "BREAKFAST",
+                "DESSERT",
+                "SNACK",
+                "ANY"
+            ],
+            category: [
+                "Quickbread"
+            ],
             howToStore: "wrap tightly in plastic wrap",
             howToReheat: "can slice and toast in toaster or in saute pan",
             howToFreeze: "wrap tightly in plastic wrap",
             howToUseRepurposeLeftoversIdeas: ["french toast", "can make into a bread pudding"],
             dishesThatAlsoUseLeftoverIngredients: [
                 {
-                    id: 17,
                     name: "Pecan stuff"
                 }
             ],
             mealAffinities: [
                 {
-                    id: 14,
                     name: "some recipe?"
                 }
             ],
@@ -101,10 +104,10 @@ const ListRecipeComponent = () => {
             description: "sourdough pizza dough",
             version: 1.0,
             ingredients: {
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=flour]]]": "200 g.",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=sourdough starter]]]": "80 g.",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=olive oil]]]": "9 g.",
-                "Ingredient [ingredientName=Ingredient [ingredientName=Ingredient [ingredientName=honey]]]": "4 g."
+                "flour": "200 g.",
+                "sourdough starter": "80 g.",
+                "olive oil": "9 g.",
+                "honey": "4 g."
             },
             method: ["Mixing", "Kneading", "Proofing", "Baking"],
             servings: 2,
@@ -160,8 +163,16 @@ const ListRecipeComponent = () => {
             notesInPlaceCollapse: false,
             origin: "Original Recipe",
             easeLevel: "MEDIUM",
-            meal: "ANY",
-            category: "Yeastbread",
+            meal: [
+                "LUNCH",
+                "DINNER",
+                "SNACK",
+                "ANY"
+            ],
+            category: [
+                "Yeastbread",
+                "Sourdough"
+            ],
             howToStore: "can put leftover pieces in tupperware",
             howToReheat: "325* oven, 4 mins",
             howToFreeze: "maybe don't want to freeze",
@@ -182,61 +193,10 @@ const ListRecipeComponent = () => {
             created: "2023-12-12T14:59:11.9416134",
             allDatesCooked: ["2023-12-12T14:59:11.9416134", "2022-10-12T14:59:11.9416134"],
             allDatesUpdated: ["2023-12-12T14:59:11.9416134", "2022-10-12T14:59:11.9416134"],
-            
-            /*
-            id: 0,
-            name: "Banana Bread",
-            description: "Quick bread of ripe bananas baked in a loaf pan",
-            version: 1.0,
-            ingredients: [
-                {
-                    name: "brown sugar"
-                },
-                {
-                    name: "baking powder"
-                },
-                {
-                    name: "flour"
-                },
-                {
-                    name: "banana"
-                }
-            ],
-            method: null,
-            servings: 8,
-            prepTime: null,
-            activeTime: null,
-            totalTime: null,
-            equipment: null,
-            pairings: null,
-            notes: null,
-            rating: 0,
-            author: null,
-            foodOrDrink: null,
-            pictures: null,
-            oftenMadeAlongside: null,
-            seasonality: null,
-            tags: null,
-            pairsWith: null,
-            notesInPlaceCollapse: null,
-            origin: null,
-            easeLevel: null,
-            meal: null,
-            category: null,
-            howToStore: null,
-            howToReheat: null,
-            howToFreeze: null,
-            howToUseRepurposeLeftoversIdeas: null,
-            dishesThatAlsoUseLeftoverIngredients: null,
-            mealAffinities: null,
-            lastCooked: null,
-            created: "2023-12-12T14:59:11.9416134",
-            allDatesCooked: null,
-            allDatesUpdated: null
-        */}
-        //{"id":2,"name":"Pizza Dough","description":"Neopolitanish pizza dough leavened with sourdough starter","version":1.0,"ingredients":[{"name":"water"},{"name":"honey"},{"name":"sourdough starter"},{"name":"flour"}],"method":null,"servings":0,"prepTime":null,"activeTime":null,"totalTime":null,"equipment":[],"pairings":[],"notes":null,"rating":0,"author":null,"foodOrDrink":null,"pictures":null,"oftenMadeAlongside":[],"seasonality":null,"tags":null,"pairsWith":[],"notesInPlaceCollapse":null,"origin":null,"easeLevel":null,"meal":null,"category":null,"howToStore":null,"howToReheat":null,"howToFreeze":null,"howToUseRepurposeLeftoversIdeas":null,"dishesThatAlsoUseLeftoverIngredients":[],"mealAffinities":[],"lastCooked":null,"created":null,"allDatesCooked":null,"allDatesUpdated":null},
-        //{"id":3,"name":"Pork Ragu","description":"Italian Ragu of pork sausage","version":1.0,"ingredients":[{"name":"crushed tomatoes"},{"name":"garlic"},{"name":"sweet Italian salsiccia"},{"name":"yellow onion"}],"method":null,"servings":0,"prepTime":null,"activeTime":null,"totalTime":null,"equipment":[],"pairings":[],"notes":null,"rating":0,"author":null,"foodOrDrink":null,"pictures":null,"oftenMadeAlongside":[],"seasonality":null,"tags":null,"pairsWith":[],"notesInPlaceCollapse":null,"origin":null,"easeLevel":null,"meal":null,"category":null,"howToStore":null,"howToReheat":null,"howToFreeze":null,"howToUseRepurposeLeftoversIdeas":null,"dishesThatAlsoUseLeftoverIngredients":[],"mealAffinities":[],"lastCooked":null,"created":null,"allDatesCooked":null,"allDatesUpdated":null}
+           }
     ]
+*/
+
 
   return (
     <div className='container'>
@@ -285,17 +245,14 @@ const ListRecipeComponent = () => {
             </thead>
             <tbody>
                 {
-                    dummyData.map(recipe =>
+                /*    dummyData.map(recipe =>   */
+                    recipes.map(recipe =>    
                         <tr key={recipe.id}>
                             <td>{recipe.id}</td>
                             <td>{recipe.name}</td>
                             <td>{recipe.description}</td>
                             <td>{recipe.version}</td>
-                            {/*<td><ul>{recipe.ingredients.entries.map([k,v] => <li>{this.v} {this.v}</li>)}</ul></td>*/}
-                            {/*<td>{parseIngredients(recipe.ingredients)}</td>*/}
-                            {/*<td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>*/}
                             <td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>
-                            {/*<td><ul>{recipe.ingredients.map(ingredient => <li>{ingredient.name}</li>)}</ul></td>*/}
                             <td><ul>{recipe.method.map(technique => <li>{technique}</li>)}</ul></td>
                             <td>{recipe.servings}</td>
                             <td>{convertDuration(recipe.prepTime)}</td>
@@ -315,8 +272,8 @@ const ListRecipeComponent = () => {
                             <td>{recipe.notesInPlaceCollapse.valueOf}</td>
                             <td>{recipe.origin}</td>
                             <td>{recipe.easeLevel}</td>
-                            <td>{recipe.meal}</td>
-                            <td>{recipe.category}</td>
+                            <td><ul>{recipe.meal.map(meal => <li>{meal}</li>)}</ul></td>
+                            <td><ul>{recipe.category.map(category => <li>{category}</li>)}</ul></td>
                             <td>{recipe.howToStore}</td>
                             <td>{recipe.howToReheat}</td>
                             <td>{recipe.howToFreeze}</td>
@@ -338,7 +295,7 @@ const ListRecipeComponent = () => {
   function parseIngredients(obj) {
     var newObj = {};
     Object.keys(obj).forEach(key => {
-    newObj[getIngredientName(key)] = obj[key]
+    newObj[key] = obj[key]
     })
 
     console.log(newObj);
@@ -346,10 +303,6 @@ const ListRecipeComponent = () => {
     return Object.entries(newObj);
   }
 
-  function getIngredientName(origString) {
-    let newStr = "";
-    return newStr = origString.slice(81,-3);
-  }  
 
   function convertDuration(t){ 
     //dividing period from time
