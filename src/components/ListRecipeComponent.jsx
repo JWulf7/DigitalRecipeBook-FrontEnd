@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import { listRecipes } from '../services/RecipeService'
+import { useNavigate } from 'react-router-dom'
 
 const ListRecipeComponent = () => {
 
     const [recipes, setRecipes] = useState([])
+
+    const navigator = useNavigate();
 
     useEffect(() => {
         listRecipes().then((Response) => {
@@ -198,11 +201,16 @@ const ListRecipeComponent = () => {
 */
 
 
+    function addNewRecipe() {
+        navigator('/add-recipe')
+    }
+
   return (
     <div className='container'>
 
         <h2 className='text-center'>List of Recipes</h2>
-        <table className='table table-striped table-bordered'>
+        <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
+        <table className='table table-striped table-bordered' height='100%'>
             <thead>
                 <tr>
                     <th>Recipe ID</th>
