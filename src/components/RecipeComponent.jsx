@@ -7,13 +7,14 @@ const RecipeComponent = () => {
     const ingredient = {
         ingredientName : ''
     }
-    const [recipeIngredients, setRecipeIngredients] = useState([ingredient])
+    const [recipeIngredients, setRecipeIngredients] = useState(Array.of(ingredient)) // might need to change the starting/default value to something else...?
     const [recipeMethods, setRecipeMethods] = useState([''])
     const [recipeServings, setRecipeServings] = useState(0)
     const [recipePrepTime, setRecipePrepTime] = useState('') // might need to make this recipePrepTimeTotal... and add subvalues... ???
     const [recipeActiveTime, setRecipeActiveTime] = useState('')
     const [recipeTotalTime, setRecipeTotalTime] = useState('')
-
+    // var ingredientsIndex = 0;
+    var [ingredientsIndex, setIngredientsIndex] = useState(0)  // might change back to const???.... 
 
     function handleRecipeName(eventObject) {
         setRecipeName(eventObject.target.value);
@@ -23,8 +24,53 @@ const RecipeComponent = () => {
         setRecipeDescription(eventObject.target.value);
     }
 
+    // function getObjectById(id) {
+    //     for (var i = 0; i < array.length; i++) {
+    //       if(array[i].id === id){
+    //         return array[i];
+    //       }
+    //     }
+    //   };
+
+    function getIndextById(id, array) {
+        for (var i = 0; i < array.length; i++) {
+          if(array[i].ingredientName === id){
+            return i;
+          }
+        }
+      };
+
     function handleRecipeIngredients(eventObject) {
-        setRecipeIngredients(eventObject.target.value);
+        console.log("in handleRecipeIngredients()")
+        let oldRecipeIngredients = recipeIngredients.slice()
+        let newIngredient = {
+            ingredientName : eventObject.target.value
+        }
+
+        let indexFromFunction = getIndextById(eventObject.target.attributes.ind.value, oldRecipeIngredients)
+        console.log("indexFromFunction = ")
+        console.log(indexFromFunction)
+        // console.log("eventObject.target.getAttribute('ind') = ")
+        // console.log(eventObject.target.getAttribute('ind'))
+        // console.log("eventObject.target.getAttribute('ind').value = ")
+        // console.log(eventObject.target.getAttribute('ind').value)
+        // console.log("eventObject.target.attributes.('ind').value = ")
+        console.log(eventObject.target.attributes.ind.value)
+        //eventObject.target.key
+        //oldRecipeIngredients.indexOf
+        let newIngredientIndex = {
+            ingredientName : eventObject.target.attributes.ind.value
+        }
+        console.log("newIngredientIndex = ")
+        console.log(newIngredientIndex)
+
+        //let ingredientInd = oldRecipeIngredients.indexOf(newIngredientIndex)
+        oldRecipeIngredients[indexFromFunction] = newIngredient
+        //oldRecipeIngredients[ingredientsIndex] = newIngredient;// maybe find a way to point to the recipeIngredient that has that name...
+
+
+        console.log(oldRecipeIngredients)
+        setRecipeIngredients([...oldRecipeIngredients]);
     }
 
     function handleRecipeMethods(eventObject) {
@@ -51,6 +97,66 @@ const RecipeComponent = () => {
         e.preventDefault();
         const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTime, recipeActiveTime, recipeTotalTime}
         console.log(recipe)
+    }
+
+    const addIngredient = (e) => {
+        e.preventDefault();
+        // when clicking on add another ingredient button, it should....
+        // render another add ingredient input??
+        // return (
+        //     <div>Added Something</div>
+        // );
+        console.log("in addIngredient()")
+        console.log("ingredientsIndex before reassign= " + ingredientsIndex)
+        let newIndex = ingredientsIndex + 1;
+        console.log("newIndex = " + newIndex)
+        setIngredientsIndex(newIndex)
+        console.log("ingredientsIndex after reassign = " + ingredientsIndex)
+        let newIngredient = {
+            ingredientName : ''
+        }
+        setRecipeIngredients([...recipeIngredients, newIngredient]);
+        console.log("after adding ingredient... recipeIngredients: ")
+        console.log(recipeIngredients)
+        
+    }
+
+    
+    function ingredientsDiv() {
+        //e.preventDefault();
+        // when clicking on add another ingredient button, it should....
+        // render another add ingredient input??
+        
+        return (
+            <>
+            {/* {(recipeIngredients || []).map((recipeIngredients, index) => { */}
+            {/* {(recipeIngredients).map((recipeIngredients) => { */}
+            {(recipeIngredients).map((recipeIngredients) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
+                <label className='form-label'>Recipe Ingredients:</label>
+                <input
+                    ind={recipeIngredients.ingredientName}
+                    type='text'
+                    placeholder='Enter an ingredient'
+                    name='recipeIngredients'
+                    //value={recipeIngredients[(recipeIngredients.length-1)].recipeName}
+                    value={recipeIngredients.ingredientName}
+                    className='form-control'
+                    // onChange={() => handleRecipeIngredients()}
+                    onChange={handleRecipeIngredients}
+                    
+                >
+                </input>
+                
+                <button className='btn btn-success' onClick={addIngredient}>Add Another Ingredient</button>
+            </div>
+                )
+                })}
+            
+            </>
+        );
     }
 
   return (
@@ -88,7 +194,7 @@ const RecipeComponent = () => {
                         </div>
 
                         {/* // can input recipe ingredients div here */}
-                        <div className='form-group mb-2'>
+                        {/* <div className='form-group mb-2'>
                             <label className='form-label'>Recipe Ingredients:</label>
                             <input
                                 type='text'
@@ -97,10 +203,12 @@ const RecipeComponent = () => {
                                 value={recipeIngredients}
                                 className='form-control'
                                 onChange={handleRecipeIngredients}
-                                multiple
                             >
                             </input>
-                        </div>
+                            
+                            <button className='btn btn-success' onClick={addIngredient()}>Add Another Ingredient</button>
+                        </div> */}
+                        {ingredientsDiv()}
 
                         <div className='form-group mb-2'>
                             <label className='form-label'>Recipe Methods:</label>
@@ -239,6 +347,20 @@ const RecipeComponent = () => {
         <br/> <br/> <br/> <br/>
     </div>
   )
+}
+
+function AddAnotherIngredient() {
+    return (
+        <input
+                            type='text'
+                            placeholder='Enter an ingredient'
+                            name='recipeIngredients'
+                            value={recipeIngredients}
+                            className='form-control'
+                            onChange={handleRecipeIngredients}
+                        >
+                        </input>
+    );
 }
 
 export default RecipeComponent
