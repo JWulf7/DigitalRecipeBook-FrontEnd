@@ -47,9 +47,20 @@ const RecipeComponent = () => {
     }
     const [recipePairings, setRecipePairings] = useState([pairing])
 
-    const [recipeNotes, setRecipeNotes] = useState(['']) 
+    const [recipeNotes, setRecipeNotes] = useState([''])
+    
+    const [recipeRating, setRecipeRating] = useState()
+
+    const [recipeAuthor, setRecipeAuthor] = useState('')
+
+    const [recipeFoodOrDrink, setRecipeFoodOrDrink] = useState('FOOD')
 
 
+
+
+
+
+    // Handler Methods
     var focusedElement = document.activeElement.id;
 
     function handleRecipeName(eventObject) {
@@ -373,6 +384,20 @@ const RecipeComponent = () => {
     }
 
 
+    function handleRecipeRating(eventObject) {
+        setRecipeRating(eventObject.target.value)
+    }
+
+    function handleRecipeAuthor(eventObject) {
+        setRecipeAuthor(eventObject.target.value);
+    }
+
+    function handleRecipeFoodOrDrink(eventObject) {
+        setRecipeFoodOrDrink(eventObject.target.value)
+    }
+
+
+
 
 
     function saveRecipe(e) {
@@ -381,7 +406,7 @@ const RecipeComponent = () => {
         let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
         let recipeTotalTimeTotal = handleRecipeTotalTime()
         const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
-                        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes}
+                        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink}
         console.log(recipe)
     }
 
@@ -397,7 +422,13 @@ const RecipeComponent = () => {
             <>
             <label className='form-label'>Recipe Ingredients:</label>
             <br/>
-            <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button>
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
+
+            {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
+            can also experiment w/ this to move buttons to right
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div>
+            
             {(recipeIngredients).map((recipeIngredients) => {
                 return(
                     
@@ -416,6 +447,8 @@ const RecipeComponent = () => {
                         >
                         </input>
                         <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}>Remove Ingredient</button>
+                        {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}><span class="glyphicon glyphicon-minus"></span></button> */}
+                        
                     </div>
                 )
                 })}
@@ -740,6 +773,83 @@ const RecipeComponent = () => {
                         {pairingsDiv()}
                         {notesDiv()}
 
+                        {/* <div className='form-group mb-2'>
+                            <label className='form-label' for="recipeRatingControlSelect">Recipe Rating:</label>
+                            <input
+                                type='number'
+                                min='1'
+                                max='100'
+                                placeholder='Enter Recipe Servings'
+                                name='recipeServings'
+                                value={recipeServings}
+                                className='form-control'
+                                onChange={handleRecipeServings}
+                            >
+                            </input>
+                        </div> */}
+                        {/* <div class="form-group">
+                            <label for="exampleFormControlSelect1">Example select</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div> */}
+                        {/* rating */}
+                        <div className="form-floating">
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeRatingControlSelect' onChange={handleRecipeRating}>
+                                {/* <option selected>*****</option> */}
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            {/* <label className='floatingSelect' for="recipeRatingControlSelect">Recipe Rating in Stars</label> */}
+                            <label className='floatingSelect'>Recipe Rating in Stars</label>
+                        </div>
+
+                        {/* author */}
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>Recipe Author:</label>
+                            <input
+                                type='text'
+                                placeholder="Enter an Author's Name"
+                                name='recipeAuthor'
+                                value={recipeAuthor}
+                                className='form-control'
+                                onChange={handleRecipeAuthor}
+                            >
+                            </input>
+                        </div>
+
+                        <br/>
+                        {/* food or drink */}
+                        <div className="form-floating">
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeFoodorDrinkControlSelect' onChange={handleRecipeFoodOrDrink}>
+                                {/* <option selected>*****</option> */}
+                                <option value="FOOD">Food</option>
+                                <option value="DRINK">Drink</option>
+                            </select>
+                            {/* <label className='floatingSelect' for="recipeRatingControlSelect">Recipe Rating in Stars</label> */}
+                            <label className='floatingSelect'>Food or Drink</label>
+                        </div>
+
+                        {/* pictures */}
+                        <div className="form-floating">
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeFoodorDrinkControlSelect' onChange={handleRecipeFoodOrDrink}>
+                                {/* <option selected>*****</option> */}
+                                <option value="FOOD">Food</option>
+                                <option value="DRINK">Drink</option>
+                            </select>
+                            {/* <label className='floatingSelect' for="recipeRatingControlSelect">Recipe Rating in Stars</label> */}
+                            <label className='floatingSelect'>Food or Drink</label>
+                        </div>
+
+
+                        <br/>
                         <button className='btn btn-success' onClick={saveRecipe}>Submit</button>
                     </form>
                 </div>
