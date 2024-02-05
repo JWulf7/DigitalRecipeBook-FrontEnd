@@ -55,6 +55,39 @@ const RecipeComponent = () => {
 
     const [recipeFoodOrDrink, setRecipeFoodOrDrink] = useState('FOOD')
 
+    const [recipePictures, setRecipePictures] = useState([])
+
+    const MAX_COUNT = 5;
+
+    const [fileLimit, setFileLimit] = useState(false)
+
+    // alongside
+    const alongside = {
+        name : ''
+    }
+    const [recipeOftenMadeAlongside, setrecipeOftenMadeAlongside] = useState([alongside])
+
+    const [recipeSeasonality, setRecipeSeasonality] = useState('ANY')
+
+    const [recipeTags, setRecipeTags] = useState([''])
+
+    const [recipePairsWith, setRecipePairsWith] = useState([pairing])
+
+    const [recipeOrigin, setRecipeOrigin] = useState('')
+
+    const [recipeEaseLevel, setRecipeEaseLevel] = useState('EASELEVEL')
+
+    const [recipeMeal, setRecipeMeal] = useState([])
+
+    const [recipeCategory, setRecipeCategory] = useState([''])
+
+    const [recipeHowToStore, setRecipeHowToStore] = useState('')
+
+    const [recipeHowToReheat, setRecipeHowToReheat] = useState('')
+
+    const [recipeHowToFreeze, setRecipeHowToFreeze] = useState('')
+
+
 
 
 
@@ -396,6 +429,228 @@ const RecipeComponent = () => {
         setRecipeFoodOrDrink(eventObject.target.value)
     }
 
+    // Handle Pictures
+    // function handleRecipePictures(eventObject) {
+    //     eventObject.preventDefault();
+
+    //     let oldRecipePictures = recipePictures.slice();
+    //     let newPicture = eventObject.target.value;
+    //     let indexFromFunction = getPictureIndexByName(eventObject.target.attributes.name.value, oldRecipePictures);
+
+    //     oldRecipePictures[indexFromFunction] = newPicture;
+    //     setRecipePictures([...oldRecipeNotes]);
+
+    //     setRecipePictures(eventObject.target.value)
+    // }
+
+    function handleRecipePictures(eventObject) {
+        const chosenFiles = Array.prototype.slice.call(eventObject.target.files)
+        handleUploadedFiles(chosenFiles);
+    }
+
+    const handleUploadedFiles = files => {
+        const uploaded = [...recipePictures];
+        let limitExceeded = false;
+        files.some((file) => {
+            if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+                uploaded.push(file);
+                if (uploaded.length === MAX_COUNT) setFileLimit(true);
+                if (uploaded.length > MAX_COUNT) {
+                    alert('You can only add a maximum of ${MAX_COUNT} files');
+                    setFileLimit(false);
+                    limitExceeded = true;
+                    return true;
+                }
+            }
+        })
+        if (!limitExceeded) setRecipePictures(uploaded)
+    }
+
+    // handle OftenMadeAlongside
+    function handleRecipeOftenMadeAlongside(eventObject) {
+        eventObject.preventDefault();
+
+        // making a copy of current array of equipment objects
+        let oldRecipeOftenMadeAlongside = recipeOftenMadeAlongside.slice()
+        // setting new pairings to the value of input field of form
+        let newAlongside = {
+            name : eventObject.target.value
+        }
+        // getting the index of what was the value upon last rending from the copy of the array 
+        let indexFromFunction = getPairingIndexByName(eventObject.target.attributes.name.value, oldRecipeOftenMadeAlongside)
+        oldRecipeOftenMadeAlongside[indexFromFunction] = newAlongside
+        setrecipeOftenMadeAlongside([...oldRecipeOftenMadeAlongside]);
+    }
+
+    const addOftenMadeAlongside = (e) => {
+        e.preventDefault();
+
+        let newAlongside = {
+            name : ''
+        }
+        setrecipeOftenMadeAlongside([...recipeOftenMadeAlongside, newAlongside]);
+    }
+
+    const removeOftenMadeAlongside = (alongsideName, e) => {
+        e.preventDefault();
+
+        let oldRecipeOftenMadeAlongside = recipeOftenMadeAlongside.slice();
+        let indexRemove = getPairingIndexByName(alongsideName, recipeOftenMadeAlongside);
+        oldRecipeOftenMadeAlongside.splice(indexRemove, 1);
+        setrecipeOftenMadeAlongside([...oldRecipeOftenMadeAlongside]);
+    }
+
+    function handleRecipeSeasonality(eventObject) {
+        setRecipeSeasonality(eventObject.target.value)
+    }
+
+
+    // handle Tags
+    function handleRecipeTags(eventObject) {
+        eventObject.preventDefault();
+
+        let oldRecipeTags = recipeTags.slice();
+        let newTag = eventObject.target.value;
+        let indexFromFunction = getNoteIndexByName(eventObject.target.attributes.name.value, oldRecipeTags);
+
+        oldRecipeTags[indexFromFunction] = newTag;
+        setRecipeTags([...oldRecipeTags]);
+    }
+
+    const addTag = (e) => {
+        e.preventDefault();
+
+        let newTag = '';
+        setRecipeTags([...recipeTags, newTag]);
+        
+    }
+
+    const removeTag = (tagName, e) => {
+        e.preventDefault();
+
+        let oldRecipeTags = recipeTags.slice();
+        let indexRemove = getTagIndexByName(tagName, oldRecipeTags);
+        oldRecipeTags.splice(indexRemove, 1);
+        setRecipeTags([...oldRecipeTags]);
+    }
+    function getTagIndexByName(name, array) {
+        for (var i = 0; i < array.length; i++) {
+            if(array[i] === name) {
+                return i;
+            }
+        }
+    }
+
+
+    // handle Pairs With
+    function handleRecipePairsWith(eventObject) {
+        eventObject.preventDefault();
+
+        // making a copy of current array of equipment objects
+        let oldRecipePairsWith = recipePairsWith.slice()
+        // setting new pairings to the value of input field of form
+        let newPairsWith = {
+            name : eventObject.target.value
+        }
+        // getting the index of what was the value upon last rending from the copy of the array 
+        let indexFromFunction = getPairingIndexByName(eventObject.target.attributes.name.value, oldRecipePairsWith)
+        oldRecipePairsWith[indexFromFunction] = newPairsWith
+        setRecipePairsWith([...oldRecipePairsWith]);
+    }
+
+    const addPairsWith = (e) => {
+        e.preventDefault();
+
+        let newPair = {
+            name : ''
+        }
+        setRecipePairsWith([...recipePairsWith, newPair]);
+    }
+
+    const removePairsWith = (pairName, e) => {
+        e.preventDefault();
+
+        let oldRecipePairsWith = recipePairsWith.slice();
+        let indexRemove = getPairingIndexByName(pairName, recipePairsWith);
+        oldRecipePairsWith.splice(indexRemove, 1);
+        setRecipePairsWith([...oldRecipePairsWith]);
+    }
+
+    function handleRecipeOrigin(eventObject) {
+        setRecipeOrigin(eventObject.target.value);
+    }
+
+    function handleRecipeEaseLevel(eventObject) {
+        setRecipeEaseLevel(eventObject.target.value)
+    }
+
+    function handleRecipeMeal(eventObject) {
+        let oldRecipeMeal = recipeMeal.slice();
+        let v = eventObject.target.value
+
+        
+        if (oldRecipeMeal.includes(v)) {
+            oldRecipeMeal.splice(oldRecipeMeal.indexOf(v), 1);
+        }
+        else {
+            oldRecipeMeal.push(v)
+        }
+
+        setRecipeMeal([...oldRecipeMeal]);
+    }
+
+    // handle Category
+    function handleRecipeCategories(eventObject) {
+        eventObject.preventDefault();
+
+        let oldRecipeCategories = recipeCategory.slice();
+        let newCategory = eventObject.target.value;
+        let indexFromFunction = getCategoryIndexByName(eventObject.target.attributes.name.value, oldRecipeCategories);
+
+        oldRecipeCategories[indexFromFunction] = newCategory;
+        setRecipeCategory([...oldRecipeCategories]);
+    }
+
+    const addCategory = (e) => {
+        e.preventDefault();
+
+        let newCategory = '';
+        setRecipeCategory([...recipeCategory, newCategory]);
+        
+    }
+
+    const removeCategory = (catName, e) => {
+        e.preventDefault();
+
+        let oldRecipeCategories = recipeCategory.slice();
+        let indexRemove = getCategoryIndexByName(catName, oldRecipeCategories);
+        oldRecipeCategories.splice(indexRemove, 1);
+        setRecipeCategory([...oldRecipeCategories]);
+    }
+    function getCategoryIndexByName(name, array) {
+        for (var i = 0; i < array.length; i++) {
+            if(array[i] === name) {
+                return i;
+            }
+        }
+    }
+
+
+    function handleRecipeHowToStore(eventObject) {
+        eventObject.preventDefault();
+        setRecipeHowToStore(eventObject.target.value);
+    }
+
+    function handleRecipeHowToReheat(eventObject) {
+        eventObject.preventDefault();
+        setRecipeHowToReheat(eventObject.target.value);
+    }
+
+    function handleRecipeHowToFreeze(eventObject) {
+        eventObject.preventDefault();
+        setRecipeHowToFreeze(eventObject.target.value);
+    }
+
 
 
 
@@ -406,7 +661,9 @@ const RecipeComponent = () => {
         let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
         let recipeTotalTimeTotal = handleRecipeTotalTime()
         const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
-                        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink}
+                        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+                        recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+                        recipeHowToStore, recipeHowToReheat, recipeHowToFreeze}
         console.log(recipe)
     }
 
@@ -426,7 +683,7 @@ const RecipeComponent = () => {
 
             {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
             {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
-            can also experiment w/ this to move buttons to right
+            {/* can also experiment w/ this to move buttons to right */}
             <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div>
             
             {(recipeIngredients).map((recipeIngredients) => {
@@ -584,6 +841,320 @@ const RecipeComponent = () => {
         )
     }
 
+    function picturesDiv() { 
+                // this functional component renders the ability to add multiple ingredients and delete said ingredients
+        return (
+            <>
+            <label className='form-label'>Recipe Pictures:</label>
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
+
+            {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
+            {/* can also experiment w/ this to move buttons to right */}
+
+            {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addPicture}>Add Picture</button></div> */}
+            
+
+                {/* got some of this functionality from here: https://levelup.gitconnected.com/how-to-implement-multiple-file-uploads-in-react-4cdcaadd0f6e  */}
+                <div className='form-group mb-2' key='recipePicturesDiv'>
+                        <input
+                            key='recipePicturesInput'
+                            type='file'
+                            name='recipePictures'
+                            className='form-control'
+                            onChange={handleRecipePictures}
+                            // autoFocus='autoFocus'
+                            id='file'
+                            multiple
+                            disabled={fileLimit}
+                            accept='application/pdf, image/png'
+                            placeholder='Choose Pictures'
+                        >
+                        </input>
+
+                        {/* <label htmlFor='file'>
+                            <a className={`btn btn-primary ${!fileLimit ? '' : 'disabled' } `}>Upload Files</a>
+                        </label> */}
+
+                        <div className='uploaded-files-list'>
+                            {recipePictures.map((file, index) => (
+                                <div key={index}>
+                                    {file.name}
+                                </div>
+                            ))}
+                        </div>
+                        
+                    </div>
+            
+
+                {/** 
+            {(recipePictures).map((recipePictures, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={index}>
+                        <input
+                            key={index}
+                            type='file'
+                            // placeholder='Enter an ingredient'
+                            name={index}
+                            // value={recipeIngredients.ingredientName}
+                            className='form-control'
+                            onChange={handleRecipePictures}
+                            autoFocus='autoFocus'
+                            id='file'
+                            
+                        >
+                        </input>
+                        {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}>Remove Ingredient</button> * /}
+
+                        <label htmlFor='file' className="sr-only">Choose file</label>
+                        {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}><span class="glyphicon glyphicon-minus"></span></button> * /}
+                        
+                    </div>
+                )
+                })}
+            */}
+            </>
+        );
+    }
+
+    function oftenMadeAlongsideDiv() {
+        // this functional component renders the ability to add multiple recipe's this recipe is often made alongside and delete said recipe associations
+        return (
+            <>
+            <label className='form-label'>Recipes Often Made Alongside:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addOftenMadeAlongside}>Additional Recipe made alongside</button>
+            {(recipeOftenMadeAlongside).map((recipeOftenMadeAlongside) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeOftenMadeAlongside.name}>
+                        <input
+                            key={recipeOftenMadeAlongside.name}
+                            type='text'
+                            placeholder='Enter a recipe name'
+                            name={recipeOftenMadeAlongside.name}
+                            value={recipeOftenMadeAlongside.name}
+                            className='form-control'
+                            onChange={handleRecipeOftenMadeAlongside}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeOftenMadeAlongside(recipeOftenMadeAlongside.name, e)}>Remove Recipe</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+    
+    
+    function tagsDiv() {
+        // this functional component renders the ability to add multiple tags and delete said tags
+        return (
+            <>
+            <label className='form-label'>Recipe Tags:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addTag}>Additional Tag</button>
+            {(recipeTags).map((recipeTags) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeTags}>
+                        <input
+                            key={recipeTags}
+                            type='text'
+                            placeholder='Enter recipe tag'
+                            name={recipeTags}
+                            value={recipeTags}
+                            className='form-control'
+                            onChange={handleRecipeTags}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeTag(recipeTags, e)}>Remove Tag</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+    function pairsWithDiv() {
+        // this functional component renders the ability to add multiple pairings and delete said pairings
+        return (
+            <>
+            <label className='form-label'>Recipe Pairs With:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addPairsWith}>Additional Pairing</button>
+            {(recipePairsWith).map((recipePairsWith) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipePairsWith.name}>
+                        <input
+                            key={recipePairsWith.name}
+                            type='text'
+                            placeholder='Enter a pairing'
+                            name={recipePairsWith.name}
+                            value={recipePairsWith.name}
+                            className='form-control'
+                            onChange={handleRecipePairsWith}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removePairsWith(recipePairsWith.name, e)}>Remove Pairing</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+
+    function mealDiv() {
+        // this functional component renders the ability to add multiple meals and delete said tags
+        return (
+            <>
+            <label className='form-label'>Meal:</label>
+            <br/>
+            <div className="btn-group btn-group-sm" role="group" aria-label="Basic checkbox toggle button group">
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck1" 
+                    autoComplete="off"
+                    value="ANY"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck1">Any</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck2" 
+                    autoComplete="off"
+                    value="BREAKFAST"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck2">Breakfast</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck7" 
+                    autoComplete="off"
+                    value="BRUNCH"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck7">Brunch</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck3" 
+                    autoComplete="off"
+                    value="LUNCH"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck3">Lunch</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck6" 
+                    autoComplete="off"
+                    value="SNACK"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck6">Snack</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck4" 
+                    autoComplete="off"
+                    value="DINNER"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck4">Dinner</label>
+
+                <input 
+                    type="checkbox" 
+                    className="btn-check" 
+                    id="btncheck5" 
+                    autoComplete="off"
+                    value="DESSERT"
+                    onChange={handleRecipeMeal}
+                />
+                <label className="btn btn-outline-primary" htmlFor="btncheck5">Dessert</label>
+
+                
+
+                
+            </div>
+
+
+
+                    {/* <div className='form-group mb-2' key={recipeMeal}>
+                        <input
+                            key={recipeMeal}
+                            type='text'
+                            placeholder='Enter recipe tag'
+                            name={recipeMeal}
+                            value={recipeMeal}
+                            className='form-control'
+                            onChange={handleRecipeTags}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeTag(recipeTags, e)}>Remove Tag</button>
+                    </div> */}
+
+            </>
+        )
+    }
+
+    function categoryDiv() {
+        // this functional component renders the ability to add multiple categories and delete said categories
+        return (
+            <>
+            <label className='form-label'>Recipe Categories:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addCategory}>Additional Category</button>
+            {(recipeCategory).map((recipeCategory) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeCategory}>
+                        <input
+                            key={recipeCategory}
+                            type='text'
+                            placeholder='Enter recipe category'
+                            name={recipeCategory}
+                            value={recipeCategory}
+                            className='form-control'
+                            onChange={handleRecipeCategories}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeCategory(recipeCategory, e)}>Remove Category</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+
+
+
+
 
 
   return (
@@ -593,7 +1164,7 @@ const RecipeComponent = () => {
             <div className='card col-md-6 offset-md-3 offset-md-3'>
                 <h2 className='text-center'>Add Recipe</h2>
                 <div className='card-body'>
-                    <form>
+                    <form encType="multipart/form-data">
                         <div className='form-group mb-2'>
                             <label className='form-label'>Recipe Name:</label>
                             <input
@@ -603,6 +1174,7 @@ const RecipeComponent = () => {
                                 value={recipeName}
                                 className='form-control'
                                 onChange={handleRecipeName}
+                                autoFocus='autoFocus'
                             >
                             </input>
                         </div>
@@ -838,15 +1410,100 @@ const RecipeComponent = () => {
                         </div>
 
                         {/* pictures */}
+                        {picturesDiv()}
+
+                        {/* often made alongside */}
+                        {oftenMadeAlongsideDiv()}
+
+                        {/* seasonality */}
                         <div className="form-floating">
-                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeFoodorDrinkControlSelect' onChange={handleRecipeFoodOrDrink}>
-                                {/* <option selected>*****</option> */}
-                                <option value="FOOD">Food</option>
-                                <option value="DRINK">Drink</option>
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeSeasonalityControlSelect' onChange={handleRecipeSeasonality}>
+                                <option defaultValue="ANY">Any</option>
+                                <option value="SPRING">Spring</option>
+                                <option value="SUMMER">Summer</option>
+                                <option value="AUTUMN">Autumn</option>
+                                <option value="WINTER">Winter</option>
                             </select>
-                            {/* <label className='floatingSelect' for="recipeRatingControlSelect">Recipe Rating in Stars</label> */}
-                            <label className='floatingSelect'>Food or Drink</label>
+                            <label className='floatingSelect'>Seasonality</label>
                         </div>
+
+                        {/* tags */}
+                        {tagsDiv()}
+                        {/* pairs with */}
+                        {pairsWithDiv()}
+
+                        {/* origin */}
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>Recipe Origin:</label>
+                            <input
+                                type='text'
+                                placeholder="Where is this recipe from?"
+                                name='recipeOrigin'
+                                value={recipeOrigin}
+                                className='form-control'
+                                onChange={handleRecipeOrigin}
+                            >
+                            </input>
+                        </div>
+
+                        {/* easeLevel */}
+                        <div className="form-floating">
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeEaseLevelControlSelect' onChange={handleRecipeEaseLevel}>
+                                <option defaultValue="EASELEVEL">EaseLevel</option>
+                                <option value="EASY">Easy</option>
+                                <option value="EASYMEDIUM">Easy-Medium</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="MEDIUMHARD">Medium-Hard</option>
+                                <option value="HARD">Hard</option>
+                            </select>
+                            <label className='floatingSelect'>Ease Level</label>
+                        </div>
+
+                        {/* meal */}
+                        {mealDiv()}
+                        {/* categories */}
+                        {categoryDiv()}
+
+                        {/* how to store */}
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>How To Store:</label>
+                            <textarea
+                                // type='textarea'
+                                placeholder="How do you store?"
+                                name='recipeHowToStore'
+                                value={recipeHowToStore}
+                                className='form-control'
+                                onChange={handleRecipeHowToStore}
+                                rows='1'
+                            />
+                        </div>
+
+                        {/* how to reheat */}
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>How To Reheat:</label>
+                            <textarea
+                                placeholder="How do you reheat?"
+                                name='recipeHowToReheat'
+                                value={recipeHowToReheat}
+                                className='form-control'
+                                onChange={handleRecipeHowToReheat}
+                                rows='1'
+                            />
+                        </div>
+
+                        {/* how to freeze */}
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>How To Freeze:</label>
+                            <textarea
+                                placeholder="How do you freeze?"
+                                name='recipeHowToFreeze'
+                                value={recipeHowToFreeze}
+                                className='form-control'
+                                onChange={handleRecipeHowToFreeze}
+                                rows='1'
+                            />
+                        </div>
+
 
 
                         <br/>
