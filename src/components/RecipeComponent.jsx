@@ -1,12 +1,101 @@
 import React, { useState } from 'react'
 
+
+
+    
+//     // TODO : need to add quantity values at some point....
+
+//     // this currently works... can try to move outside the block...
+// function ingredientsDiv(recipeIngredients, addIngredient, handleRecipeIngredients, removeIngredient, handleRecipeIngredientsQty) { 
+//         // this functional component renders the ability to add multiple ingredients and delete said ingredients
+// return (
+//     <>
+//     <label className='form-label'>Recipe Ingredients:</label>
+//     <br/>
+//     {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
+
+//     {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
+//     {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
+//     {/* can also experiment w/ this to move buttons to right */}
+//     <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div>
+    
+//     {(recipeIngredients).map((recipeIngredients, index) => {
+//         return(
+            
+//             // <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
+//             <div className='form-group mb-2' key={'recipeIngredient'+ index}>
+//                 <input
+//                     // key={'ingredientName:' + recipeIngredients.ingredientName}
+//                     key={'ingredientName:' + index}
+//                     ind={recipeIngredients.ingredientName}
+//                     type='text'
+//                     placeholder='Enter an ingredient'
+//                     // placeholder={'ingredientName:' + recipeIngredients.ingredientName}
+//                     name='recipeIngredients'
+//                     value={recipeIngredients.ingredientName}
+//                     className='form-control'
+//                     onChange={handleRecipeIngredients}
+//                     // autoFocus='autoFocus'
+                    
+//                 >
+//                 </input>
+//                 {ingredientQtyDiv(recipeIngredients, handleRecipeIngredientsQty, index)}
+//                 {/* <input
+//                     key={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+//                     ingname={recipeIngredients.ingredientName}
+//                     type='text'
+//                     placeholder='Enter a quantity'
+//                     // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+//                     name='recipeIngredientsQty'
+//                     value={recipeIngredients.ingredientQty}
+//                     className='form-control'
+//                     onChange={handleRecipeIngredientsQty}
+//                     autoFocus='autoFocus'
+                    
+//                 >
+//                 </input> */}
+//                 <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}>Remove Ingredient</button>
+//                 {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}><span class="glyphicon glyphicon-minus"></span></button> */}
+                
+//             </div>
+//         )
+//         })}
+    
+//     </>
+// );
+// }
+
+// function ingredientQtyDiv(object, handleRecipeIngredientsQty, index) {
+// return (
+//     <>
+//         <input
+//             key={'ingredientName.ingredientQty:' + index}
+//             ingname={object.ingredientName}
+//             type='text'
+//             placeholder='Enter a quantity'
+//             // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+//             name='recipeIngredientsQty'
+//             value={object.ingredientQty}
+//             className='form-control'
+//             onChange={handleRecipeIngredientsQty}
+//             // autoFocus='autoFocus'
+            
+//         >
+//         </input>
+//     </>
+// );
+// }
+
+
 const RecipeComponent = () => {
 
     const [recipeName, setRecipeName] = useState('')
     const [recipeDescription, setRecipeDescription] = useState('')
     // ingredients
     const ingredient = {
-        ingredientName : ''
+        ingredientName : '',
+        ingredientQty : ''
+
     }
     const [recipeIngredients, setRecipeIngredients] = useState(Array.of(ingredient)) // might need to change the starting/default value to something else...?
     var [ingredientsIndex, setIngredientsIndex] = useState(0)  // might change back to const???.... 
@@ -122,11 +211,31 @@ const RecipeComponent = () => {
         let oldRecipeIngredients = recipeIngredients.slice()
         // setting new ingredient to the value of input field of form
         let newIngredient = {
-            ingredientName : eventObject.target.value
+            ingredientName : eventObject.target.value,
+            ingredientQty : ''
         }
 
         // getting the index of what was the value upon last rending from the copy of the array 
         let indexFromFunction = getIndextById(eventObject.target.attributes.ind.value, oldRecipeIngredients) // might change to attributes.name.value ???.. stay consistent
+
+        //let ingredientInd = oldRecipeIngredients.indexOf(newIngredientIndex)
+        oldRecipeIngredients[indexFromFunction] = newIngredient
+        //oldRecipeIngredients[ingredientsIndex] = newIngredient;// maybe find a way to point to the recipeIngredient that has that name...
+
+        setRecipeIngredients([...oldRecipeIngredients]);
+    }
+    function handleRecipeIngredientsQty(eventObject) {
+        eventObject.preventDefault();
+        // making a copy of current array of ingredient objects
+        let oldRecipeIngredients = recipeIngredients.slice()
+        // setting new ingredient to the value of input field of form
+        let newIngredient = {
+            ingredientName : eventObject.target.attributes.ingname.value,
+            ingredientQty : eventObject.target.value
+        }
+
+        // getting the index of what was the value upon last rending from the copy of the array 
+        let indexFromFunction = getIndextById(eventObject.target.attributes.ingname.value, oldRecipeIngredients) // might change to attributes.name.value ???.. stay consistent
 
         //let ingredientInd = oldRecipeIngredients.indexOf(newIngredientIndex)
         oldRecipeIngredients[indexFromFunction] = newIngredient
@@ -140,7 +249,8 @@ const RecipeComponent = () => {
         let newIndex = ingredientsIndex + 1;
         setIngredientsIndex(newIndex)
         let newIngredient = {
-            ingredientName : ''
+            ingredientName : '', 
+            ingredientQty : ''
         }
         setRecipeIngredients([...recipeIngredients, newIngredient]);
     }
@@ -798,20 +908,37 @@ const RecipeComponent = () => {
             {/* can also experiment w/ this to move buttons to right */}
             <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div>
             
-            {(recipeIngredients).map((recipeIngredients) => {
+            {(recipeIngredients).map((recipeIngredients, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
+                    // <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
+                    <div className='form-group mb-2' key={'recipeIngredient'+ index}>
                         <input
-                            key={recipeIngredients.ingredientName}
+                            key={'ingredientName:' + index}
                             ind={recipeIngredients.ingredientName}
                             type='text'
                             placeholder='Enter an ingredient'
+                            // placeholder={'ingredientName:' + recipeIngredients.ingredientName}
                             name='recipeIngredients'
                             value={recipeIngredients.ingredientName}
                             className='form-control'
                             onChange={handleRecipeIngredients}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        {/* {ingredientQtyDiv(recipeIngredients)} */}
+                        <input
+                            key={'ingredientName.ingredientQty:' + index}
+                            ingname={recipeIngredients.ingredientName}
+                            type='text'
+                            placeholder='Enter a quantity'
+                            // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+                            name='recipeIngredientsQty'
+                            value={recipeIngredients.ingredientQty}
+                            className='form-control'
+                            onChange={handleRecipeIngredientsQty}
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -826,6 +953,28 @@ const RecipeComponent = () => {
         );
     }
 
+    // function ingredientQtyDiv(object) {
+    //     return (
+    //         <>
+    //             <input
+    //                 key={'ingredientName:' + object.ingredientName + '.ingredientQty:' + object.ingredientQty}
+    //                 ingname={object.ingredientName}
+    //                 type='text'
+    //                 placeholder='Enter a quantity'
+    //                 // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+    //                 name='recipeIngredientsQty'
+    //                 value={object.ingredientQty}
+    //                 className='form-control'
+    //                 onChange={handleRecipeIngredientsQty}
+    //                 autoFocus='autoFocus'
+                    
+    //             >
+    //             </input>
+    //         </>
+    //     );
+    // }
+
+
     function methodsDiv() {
         // this functional component renders the ability to add multiple methods and delete said methods
         return (
@@ -833,19 +982,21 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Methods:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addMethod}>Additional Method</button>
-            {(recipeMethods).map((recipeMethods) => {
+            {(recipeMethods).map((recipeMethods, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeMethods}>
+                    // <div className='form-group mb-2' key={recipeMethods}>
+                    <div className='form-group mb-2' key={'recipeMethods' + index}>
                         <input
-                            key={recipeMethods}
+                            // key={recipeMethods}
+                            key={'method'+index}
                             type='text'
                             placeholder='Enter recipe method'
                             name={recipeMethods}
                             value={recipeMethods}
                             className='form-control'
                             onChange={handleRecipeMethods}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -865,19 +1016,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Equipment:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addEquipment}>Additional Equipment</button>
-            {(recipeEquipment).map((recipeEquipment) => {
+            {(recipeEquipment).map((recipeEquipment, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeEquipment.name}>
+                    <div className='form-group mb-2' key={'recipeEquipment'+index}>
                         <input
-                            key={recipeEquipment.name}
+                            key={'recipeEquipmentName'+index}
                             type='text'
                             placeholder='Enter a piece of equipment'
                             name={recipeEquipment.name}
                             value={recipeEquipment.name}
                             className='form-control'
                             onChange={handleRecipeEquipment}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -897,19 +1048,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Pairings:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addPairing}>Additional Pairing</button>
-            {(recipePairings).map((recipePairings) => {
+            {(recipePairings).map((recipePairings, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipePairings.name}>
+                    <div className='form-group mb-2' key={'recipePairings'+index}>
                         <input
-                            key={recipePairings.name}
+                            key={'recipePairings.name'+index}
                             type='text'
                             placeholder='Enter a pairing'
                             name={recipePairings.name}
                             value={recipePairings.name}
                             className='form-control'
                             onChange={handleRecipePairings}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -929,19 +1080,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Notes:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addNote}>Additional Note</button>
-            {(recipeNotes).map((recipeNotes) => {
+            {(recipeNotes).map((recipeNotes, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeNotes}>
+                    <div className='form-group mb-2' key={'recipeNotes'+index}>
                         <input
-                            key={recipeNotes}
+                            key={'recipeNote'+index}
                             type='text'
                             placeholder='Enter recipe note'
                             name={recipeNotes}
                             value={recipeNotes}
                             className='form-control'
                             onChange={handleRecipeNotes}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1038,19 +1189,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipes Often Made Alongside:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addOftenMadeAlongside}>Additional Recipe made alongside</button>
-            {(recipeOftenMadeAlongside).map((recipeOftenMadeAlongside) => {
+            {(recipeOftenMadeAlongside).map((recipeOftenMadeAlongside, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeOftenMadeAlongside.name}>
+                    <div className='form-group mb-2' key={'oftenMadeAlongsideDiv'+index}>
                         <input
-                            key={recipeOftenMadeAlongside.name}
+                            key={'oftenMadeAlongsideInput'+index}
                             type='text'
                             placeholder='Enter a recipe name'
                             name={recipeOftenMadeAlongside.name}
                             value={recipeOftenMadeAlongside.name}
                             className='form-control'
                             onChange={handleRecipeOftenMadeAlongside}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1071,19 +1222,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Tags:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addTag}>Additional Tag</button>
-            {(recipeTags).map((recipeTags) => {
+            {(recipeTags).map((recipeTags, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeTags}>
+                    <div className='form-group mb-2' key={'recipeTagsDiv'+index}>
                         <input
-                            key={recipeTags}
+                            key={'recipeTagsInput'+index}
                             type='text'
                             placeholder='Enter recipe tag'
                             name={recipeTags}
                             value={recipeTags}
                             className='form-control'
                             onChange={handleRecipeTags}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1102,19 +1253,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Pairs With:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addPairsWith}>Additional Pairing</button>
-            {(recipePairsWith).map((recipePairsWith) => {
+            {(recipePairsWith).map((recipePairsWith, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipePairsWith.name}>
+                    <div className='form-group mb-2' key={'pairsWithDiv'+index}>
                         <input
-                            key={recipePairsWith.name}
+                            key={'pairsWithInput'+index}
                             type='text'
                             placeholder='Enter a pairing'
                             name={recipePairsWith.name}
                             value={recipePairsWith.name}
                             className='form-control'
                             onChange={handleRecipePairsWith}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1239,19 +1390,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Recipe Categories:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addCategory}>Additional Category</button>
-            {(recipeCategory).map((recipeCategory) => {
+            {(recipeCategory).map((recipeCategory, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeCategory}>
+                    <div className='form-group mb-2' key={'recipeCategoryDiv'+index}>
                         <input
-                            key={recipeCategory}
+                            key={'recipeCategoryInput'+index}
                             type='text'
                             placeholder='Enter recipe category'
                             name={recipeCategory}
                             value={recipeCategory}
                             className='form-control'
                             onChange={handleRecipeCategories}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1270,19 +1421,19 @@ const RecipeComponent = () => {
             <label className='form-label'>How to use/repurpose leftovers ideas:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addIdea}>Additional Idea</button>
-            {(recipeHowToUseRepurposeLeftoversIdeas).map((recipeHowToUseRepurposeLeftoversIdeas) => {
+            {(recipeHowToUseRepurposeLeftoversIdeas).map((recipeHowToUseRepurposeLeftoversIdeas, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeHowToUseRepurposeLeftoversIdeas}>
+                    <div className='form-group mb-2' key={'howToUseRepurposeLeftoversIdeasDiv'+index}>
                         <input
-                            key={recipeHowToUseRepurposeLeftoversIdeas}
+                            key={'howToUseRepurposeLeftoversIdeasInput'+index}
                             type='text'
                             placeholder='Enter leftover idea'
                             name={recipeHowToUseRepurposeLeftoversIdeas}
                             value={recipeHowToUseRepurposeLeftoversIdeas}
                             className='form-control'
                             onChange={handleRecipeHowToUseRepurposeLeftoversIdeas}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1301,19 +1452,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Dishes that also use leftover ingredients:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addDishLeftoverIngredients}>Additional Dish</button>
-            {(recipeDishesThatAlsoUseLeftoverIngredients).map((recipeDishesThatAlsoUseLeftoverIngredients) => {
+            {(recipeDishesThatAlsoUseLeftoverIngredients).map((recipeDishesThatAlsoUseLeftoverIngredients, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeDishesThatAlsoUseLeftoverIngredients.name}>
+                    <div className='form-group mb-2' key={'dishesThatAlsoUseLeftoverIngredientsDiv'+index}>
                         <input
-                            key={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            key={'dishesThatAlsoUseLeftoverIngredientsInput'+index}
                             type='text'
                             placeholder='Enter a recipe name'
                             name={recipeDishesThatAlsoUseLeftoverIngredients.name}
                             value={recipeDishesThatAlsoUseLeftoverIngredients.name}
                             className='form-control'
                             onChange={handleRecipeDishesThatAlsoUseLeftoverIngredients}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1333,19 +1484,19 @@ const RecipeComponent = () => {
             <label className='form-label'>Meal Affinities:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addMealAffinity}>Additional Affinity</button>
-            {(recipeMealAffinities).map((recipeMealAffinities) => {
+            {(recipeMealAffinities).map((recipeMealAffinities, index) => {
                 return(
                     
-                    <div className='form-group mb-2' key={recipeMealAffinities.name}>
+                    <div className='form-group mb-2' key={'mealAffinitiesDiv'+index}>
                         <input
-                            key={recipeMealAffinities.name}
+                            key={'mealAffinitiesInput'+index}
                             type='text'
                             placeholder='Enter a recipe name'
                             name={recipeMealAffinities.name}
                             value={recipeMealAffinities.name}
                             className='form-control'
                             onChange={handleRecipeMealAffinities}
-                            autoFocus='autoFocus'
+                            // autoFocus='autoFocus'
                             
                         >
                         </input>
@@ -1382,7 +1533,7 @@ const RecipeComponent = () => {
                                 value={recipeName}
                                 className='form-control'
                                 onChange={handleRecipeName}
-                                autoFocus='autoFocus'
+                                // autoFocus='autoFocus'
                             >
                             </input>
                         </div>
@@ -1415,7 +1566,10 @@ const RecipeComponent = () => {
                             
                             <button className='btn btn-success' onClick={addIngredient()}>Add Another Ingredient</button>
                         </div> */}
+
+
                         {ingredientsDiv()}
+                        {/* {ingredientsDiv(recipeIngredients, addIngredient, handleRecipeIngredients, removeIngredient, handleRecipeIngredientsQty)} */}
                         {/* {ingredientsDivToo(recipeIngredients, handleRecipeIngredients, addIngredient, removeIngredient, getIndextById, focusedElement)} */}
 
                         {methodsDiv()}
@@ -1669,6 +1823,7 @@ const RecipeComponent = () => {
 
                         {/* meal */}
                         {mealDiv()}
+                        <br/>
                         {/* categories */}
                         {categoryDiv()}
 
