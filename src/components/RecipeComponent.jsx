@@ -87,6 +87,12 @@ const RecipeComponent = () => {
 
     const [recipeHowToFreeze, setRecipeHowToFreeze] = useState('')
 
+    const [recipeHowToUseRepurposeLeftoversIdeas, setRecipeHowToUseRepurposeLeftoversIdeas] = useState([''])
+
+    const [recipeDishesThatAlsoUseLeftoverIngredients, setRecipeDishesThatAlsoUseLeftoverIngredients] = useState([pairing])
+
+    const [recipeMealAffinities, setRecipeMealAffinities] = useState([pairing])
+
 
 
 
@@ -652,6 +658,111 @@ const RecipeComponent = () => {
     }
 
 
+    // handle How To Use/Repurpose Leftovers Ideas
+    function handleRecipeHowToUseRepurposeLeftoversIdeas(eventObject) {
+        eventObject.preventDefault();
+
+        let oldRecipeHowToUseRepurposeLeftoversIdeas = recipeHowToUseRepurposeLeftoversIdeas.slice();
+        let newIdea = eventObject.target.value;
+        let indexFromFunction = getNoteIndexByName(eventObject.target.attributes.name.value, oldRecipeHowToUseRepurposeLeftoversIdeas);
+
+        oldRecipeHowToUseRepurposeLeftoversIdeas[indexFromFunction] = newIdea;
+        setRecipeHowToUseRepurposeLeftoversIdeas([...oldRecipeHowToUseRepurposeLeftoversIdeas]);
+    }
+
+    const addIdea = (e) => {
+        e.preventDefault();
+
+        let newIdea = '';
+        setRecipeHowToUseRepurposeLeftoversIdeas([...recipeHowToUseRepurposeLeftoversIdeas, newIdea]);
+        
+    }
+
+    const removeIdea = (ideaName, e) => {
+        e.preventDefault();
+
+        let oldRecipeHowToUseRepurposeLeftoversIdeas = recipeHoldRecipeHowToUseRepurposeLeftoversIdeas.slice();
+        let indexRemove = getNoteIndexByName(ideaName, oldRecipeHowToUseRepurposeLeftoversIdeas);
+        oldRecipeHowToUseRepurposeLeftoversIdeas.splice(indexRemove, 1);
+        setRecipeHoldRecipeHowToUseRepurposeLeftoversIdeas([...oldRecipeHowToUseRepurposeLeftoversIdeas]);
+    }
+
+    // handle Dishes that also use leftover ingredients
+    function handleRecipeDishesThatAlsoUseLeftoverIngredients(eventObject) {
+        eventObject.preventDefault();
+
+        // making a copy of current array of objects
+        let oldRecipeDishesThatAlsoUseLeftoverIngredients = recipeDishesThatAlsoUseLeftoverIngredients.slice()
+        // setting new dishes to the value of input field of form
+        let newDish = {
+            name : eventObject.target.value
+        }
+        // getting the index of what was the value upon last rending from the copy of the array 
+        let indexFromFunction = getPairingIndexByName(eventObject.target.attributes.name.value, oldRecipeDishesThatAlsoUseLeftoverIngredients)
+        oldRecipeDishesThatAlsoUseLeftoverIngredients[indexFromFunction] = newDish
+        setRecipeDishesThatAlsoUseLeftoverIngredients([...oldRecipeDishesThatAlsoUseLeftoverIngredients]);
+    }
+
+    const addDishLeftoverIngredients = (e) => {
+        e.preventDefault();
+
+        let newDish = {
+            name : ''
+        }
+        setRecipeDishesThatAlsoUseLeftoverIngredients([...recipeDishesThatAlsoUseLeftoverIngredients, newDish]);
+    }
+
+    const removeDishLeftoverIngredients = (dishName, e) => {
+        e.preventDefault();
+
+        let oldRecipeDishesThatAlsoUseLeftoverIngredients = recipeDishesThatAlsoUseLeftoverIngredients.slice();
+        let indexRemove = getPairingIndexByName(dishName, recipeDishesThatAlsoUseLeftoverIngredients);
+        oldRecipeDishesThatAlsoUseLeftoverIngredients.splice(indexRemove, 1);
+        setRecipeDishesThatAlsoUseLeftoverIngredients([...oldRecipeDishesThatAlsoUseLeftoverIngredients]);
+    }
+
+
+    // handle Meal Affinities
+    function handleRecipeMealAffinities(eventObject) {
+        eventObject.preventDefault();
+
+        // making a copy of current array of objects
+        let oldRecipeMealAffinities = recipeMealAffinities.slice()
+        // setting new dishes to the value of input field of form
+        let newAffinity = {
+            name : eventObject.target.value
+        }
+        // getting the index of what was the value upon last rending from the copy of the array 
+        let indexFromFunction = getPairingIndexByName(eventObject.target.attributes.name.value, oldRecipeMealAffinities)
+        oldRecipeMealAffinities[indexFromFunction] = newAffinity
+        setRecipeMealAffinities([...oldRecipeMealAffinities]);
+    }
+
+    const addMealAffinity = (e) => {
+        e.preventDefault();
+
+        let newAffinity = {
+            name : ''
+        }
+        setRecipeMealAffinities([...recipeMealAffinities, newAffinity]);
+    }
+
+    const removeMealAffinity = (affinityName, e) => {
+        e.preventDefault();
+
+        let oldRecipeMealAffinities = recipeMealAffinities.slice();
+        let indexRemove = getPairingIndexByName(affinityName, recipeMealAffinities);
+        oldRecipeMealAffinities.splice(indexRemove, 1);
+        setRecipeMealAffinities([...oldRecipeMealAffinities]);
+    }
+
+
+
+
+
+
+
+
 
 
 
@@ -663,7 +774,8 @@ const RecipeComponent = () => {
         const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
                         recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
                         recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
-                        recipeHowToStore, recipeHowToReheat, recipeHowToFreeze}
+                        recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+                        recipeMealAffinities}
         console.log(recipe)
     }
 
@@ -1151,6 +1263,102 @@ const RecipeComponent = () => {
         )
     }
 
+    function useLeftoversIdeasDiv() {
+        // this functional component renders the ability to add multiple notes and delete said notes
+        return (
+            <>
+            <label className='form-label'>How to use/repurpose leftovers ideas:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addIdea}>Additional Idea</button>
+            {(recipeHowToUseRepurposeLeftoversIdeas).map((recipeHowToUseRepurposeLeftoversIdeas) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeHowToUseRepurposeLeftoversIdeas}>
+                        <input
+                            key={recipeHowToUseRepurposeLeftoversIdeas}
+                            type='text'
+                            placeholder='Enter leftover idea'
+                            name={recipeHowToUseRepurposeLeftoversIdeas}
+                            value={recipeHowToUseRepurposeLeftoversIdeas}
+                            className='form-control'
+                            onChange={handleRecipeHowToUseRepurposeLeftoversIdeas}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeIdea(recipeHowToUseRepurposeLeftoversIdeas, e)}>Remove Idea</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+    function leftoverIngredientsDiv() {
+        // this functional component renders the ability to add multiple dishes and delete said dishes
+        return (
+            <>
+            <label className='form-label'>Dishes that also use leftover ingredients:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addDishLeftoverIngredients}>Additional Dish</button>
+            {(recipeDishesThatAlsoUseLeftoverIngredients).map((recipeDishesThatAlsoUseLeftoverIngredients) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeDishesThatAlsoUseLeftoverIngredients.name}>
+                        <input
+                            key={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            type='text'
+                            placeholder='Enter a recipe name'
+                            name={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            value={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            className='form-control'
+                            onChange={handleRecipeDishesThatAlsoUseLeftoverIngredients}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeDishLeftoverIngredients(recipeDishesThatAlsoUseLeftoverIngredients.name, e)}>Remove Dish</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function mealAffinitiesDiv() {
+        // this functional component renders the ability to add multiple affinities and delete said affinities
+        return (
+            <>
+            <label className='form-label'>Meal Affinities:</label>
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addMealAffinity}>Additional Affinity</button>
+            {(recipeMealAffinities).map((recipeMealAffinities) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={recipeMealAffinities.name}>
+                        <input
+                            key={recipeMealAffinities.name}
+                            type='text'
+                            placeholder='Enter a recipe name'
+                            name={recipeMealAffinities.name}
+                            value={recipeMealAffinities.name}
+                            className='form-control'
+                            onChange={handleRecipeMealAffinities}
+                            autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeMealAffinity(recipeMealAffinities.name, e)}>Remove Affinity</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+
 
 
 
@@ -1503,6 +1711,13 @@ const RecipeComponent = () => {
                                 rows='1'
                             />
                         </div>
+
+                        {/* how to use/repurpose leftovers ideas */}
+                        {useLeftoversIdeasDiv()}
+                        {/* dishes that also use leftover ingredients */}
+                        {leftoverIngredientsDiv()}
+                        {/* meal affinities */}
+                        {mealAffinitiesDiv()}
 
 
 
