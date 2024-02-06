@@ -1,91 +1,6 @@
 import React, { useState } from 'react'
-
-
-
-    
-//     // TODO : need to add quantity values at some point....
-
-//     // this currently works... can try to move outside the block...
-// function ingredientsDiv(recipeIngredients, addIngredient, handleRecipeIngredients, removeIngredient, handleRecipeIngredientsQty) { 
-//         // this functional component renders the ability to add multiple ingredients and delete said ingredients
-// return (
-//     <>
-//     <label className='form-label'>Recipe Ingredients:</label>
-//     <br/>
-//     {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
-
-//     {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
-//     {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
-//     {/* can also experiment w/ this to move buttons to right */}
-//     <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div>
-    
-//     {(recipeIngredients).map((recipeIngredients, index) => {
-//         return(
-            
-//             // <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
-//             <div className='form-group mb-2' key={'recipeIngredient'+ index}>
-//                 <input
-//                     // key={'ingredientName:' + recipeIngredients.ingredientName}
-//                     key={'ingredientName:' + index}
-//                     ind={recipeIngredients.ingredientName}
-//                     type='text'
-//                     placeholder='Enter an ingredient'
-//                     // placeholder={'ingredientName:' + recipeIngredients.ingredientName}
-//                     name='recipeIngredients'
-//                     value={recipeIngredients.ingredientName}
-//                     className='form-control'
-//                     onChange={handleRecipeIngredients}
-//                     // autoFocus='autoFocus'
-                    
-//                 >
-//                 </input>
-//                 {ingredientQtyDiv(recipeIngredients, handleRecipeIngredientsQty, index)}
-//                 {/* <input
-//                     key={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
-//                     ingname={recipeIngredients.ingredientName}
-//                     type='text'
-//                     placeholder='Enter a quantity'
-//                     // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
-//                     name='recipeIngredientsQty'
-//                     value={recipeIngredients.ingredientQty}
-//                     className='form-control'
-//                     onChange={handleRecipeIngredientsQty}
-//                     autoFocus='autoFocus'
-                    
-//                 >
-//                 </input> */}
-//                 <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}>Remove Ingredient</button>
-//                 {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}><span class="glyphicon glyphicon-minus"></span></button> */}
-                
-//             </div>
-//         )
-//         })}
-    
-//     </>
-// );
-// }
-
-// function ingredientQtyDiv(object, handleRecipeIngredientsQty, index) {
-// return (
-//     <>
-//         <input
-//             key={'ingredientName.ingredientQty:' + index}
-//             ingname={object.ingredientName}
-//             type='text'
-//             placeholder='Enter a quantity'
-//             // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
-//             name='recipeIngredientsQty'
-//             value={object.ingredientQty}
-//             className='form-control'
-//             onChange={handleRecipeIngredientsQty}
-//             // autoFocus='autoFocus'
-            
-//         >
-//         </input>
-//     </>
-// );
-// }
-
+import { createRecipe } from '../services/RecipeService'
+import { useNavigate } from 'react-router-dom'
 
 const RecipeComponent = () => {
 
@@ -183,7 +98,7 @@ const RecipeComponent = () => {
     const [recipeMealAffinities, setRecipeMealAffinities] = useState([pairing])
 
 
-
+    const navigator = useNavigate();
 
 
 
@@ -871,22 +786,82 @@ const RecipeComponent = () => {
 
 
 
+    function convertDTOSchema(recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+        recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+        recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+        recipeMealAffinities) {
+        let name = recipeName;
+        let description = recipeDescription;
+        let version = 0;
+        let ingredients = recipeIngredients;
+        let method = recipeMethods;
+        let servings = recipeServings;
+        let prepTime = recipePrepTimeTotal;
+        let activeTime = recipeActiveTimeTotal;
+        let totalTime = recipeTotalTimeTotal;
+        let equipment = recipeEquipment;
+        let pairings = recipePairings;
+        let notes = recipeNotes;
+        let rating = recipeRating;
+        let author = recipeAuthor;
+        let foodOrDrink = recipeFoodOrDrink;
+        let pictures = recipePictures;
+        let oftenMadeAlongside = recipeOftenMadeAlongside;
+        let seasonality = recipeSeasonality;
+        let tags = recipeTags;
+        let pairsWith = recipePairsWith;
+        let notesInPlaceCollapse = true;
+        let origin = recipeOrigin;
+        let easeLevel = recipeEaseLevel;
+        let meal = recipeMeal;
+        let category = recipeCategory;
+        let howToStore = recipeHowToStore;
+        let howToReheat = recipeHowToReheat;
+        let howToFreeze = recipeHowToFreeze;
+        let howToUseRepurposeLeftoversIdeas = recipeHowToUseRepurposeLeftoversIdeas;
+        let dishesThatAlsoUseLeftoverIngredients = recipeDishesThatAlsoUseLeftoverIngredients;
+        let mealAffinities = recipeMealAffinities;
+        let lastCooked = '';
+        let created = '';
+        let allDatesCooked = [''];
+        let allDatesUpdated = [''];
 
+        const recipeDTO = {name, description, version, ingredients, method, servings, prepTime, activeTime, totalTime, equipment, pairings, notes, rating, author, foodOrDrink, pictures,
+                            oftenMadeAlongside, seasonality, tags, pairsWith, notesInPlaceCollapse, origin, easeLevel, meal, category, howToStore, howToReheat, howToFreeze,
+                            howToUseRepurposeLeftoversIdeas, dishesThatAlsoUseLeftoverIngredients, mealAffinities, lastCooked, created, allDatesCooked, allDatesUpdated}
+
+        return recipeDTO;
+    }
 
 
 
 
     function saveRecipe(e) {
         e.preventDefault();
+        // handle durations
         let recipePrepTimeTotal = handleRecipePrepTimeTotal();
         let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
         let recipeTotalTimeTotal = handleRecipeTotalTime()
-        const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
-                        recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
-                        recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
-                        recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
-                        recipeMealAffinities}
-        console.log(recipe)
+
+        // convert naming to DTO schema
+        const recipeDTO = convertDTOSchema(recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+            recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+            recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+            recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+            recipeMealAffinities)
+
+        // const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+        //                 recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+        //                 recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+        //                 recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+        //                 recipeMealAffinities}
+        console.log(recipeDTO)
+
+        createRecipe(recipeDTO).then((response) => {
+            console.log(response.data);
+            navigator('/recipes')
+        })
     }
 
 
@@ -1521,7 +1496,7 @@ const RecipeComponent = () => {
         <br/> <br/>
         <div className='row'>
             <div className='card col-md-6 offset-md-3 offset-md-3'>
-                <h2 className='text-center'>Add Recipe</h2>
+                <h2 className='text-center'>Add New Recipe</h2>
                 <div className='card-body'>
                     <form encType="multipart/form-data">
                         <div className='form-group mb-2'>
