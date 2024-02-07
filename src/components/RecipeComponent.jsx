@@ -784,6 +784,13 @@ const RecipeComponent = () => {
 
 
 
+    function convertIngredientsForSerialization(ingredients) {
+        let sendIngredients = {};
+        ingredients.map((ingredients) => {
+        sendIngredients[ingredients.ingredientName] = ingredients.ingredientQty;
+         } )
+         return sendIngredients;
+    }
 
 
     function convertDTOSchema(recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
@@ -844,8 +851,12 @@ const RecipeComponent = () => {
         let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
         let recipeTotalTimeTotal = handleRecipeTotalTime()
 
+        // handle ingredient serialization
+        let ingredientObject = convertIngredientsForSerialization(recipeIngredients);
+
+
         // convert naming to DTO schema
-        const recipeDTO = convertDTOSchema(recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+        const recipeDTO = convertDTOSchema(recipeName, recipeDescription, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
             recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
             recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
             recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
