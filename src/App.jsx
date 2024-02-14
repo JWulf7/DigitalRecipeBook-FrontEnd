@@ -3,7 +3,7 @@ import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
 import ListRecipeComponent from './components/ListRecipeComponent'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import RecipeComponent from './components/RecipeComponent'
+import CreateRecipeComponent from './components/CreateRecipeComponent'
 
 function App() {
 
@@ -17,9 +17,9 @@ function App() {
             {/* // http://localhost:3000/recipes */}
             <Route path='/recipes' element = {<ListRecipeComponent/>}></Route>
             {/* // http://localhost:3000/add-recipe */}
-            <Route path='/add-recipe' element = {<RecipeComponent/>}></Route>
+            <Route path='/add-recipe' element = {<CreateRecipeComponent/>}></Route>
           </Routes>
-        
+        <br/><br/>
         <FooterComponent/>
       </BrowserRouter>
     </>

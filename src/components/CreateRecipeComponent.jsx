@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { createRecipe } from '../services/RecipeService'
 import { useNavigate } from 'react-router-dom'
 
-const RecipeComponent = () => {
+const CreateRecipeComponent = () => {
 
     const [recipeName, setRecipeName] = useState('')
     const [recipeDescription, setRecipeDescription] = useState('')
@@ -97,6 +97,38 @@ const RecipeComponent = () => {
 
     const [recipeMealAffinities, setRecipeMealAffinities] = useState([pairing])
 
+
+    const [errors, setErrors] = useState({
+        recipeName: '', 
+        // recipeDescription: '', 
+        // recipeIngredients: Array.of(ingredient), 
+        // recipeMethods: [''], 
+        // recipeServings: '', 
+        // recipePrepTimeTotal: '', 
+        // recipeActiveTimeTotal: '', 
+        // recipeTotalTimeTotal: '', 
+        // recipeEquipment: [equipment], 
+        // recipePairings: [pairing], 
+        // recipeNotes: [''],
+        // recipeRating: 0, 
+        // recipeAuthor: '', 
+        // recipeFoodOrDrink: '', 
+        // recipePictures: [''],
+        // recipeOftenMadeAlongside: [alongside], 
+        // recipeSeasonality: '', 
+        // recipeTags: [''], 
+        // recipePairsWith: [pairing], 
+        // recipeOrigin: '', 
+        // recipeEaseLevel: '', 
+        // recipeMeal: [''], 
+        // recipeCategory: [''],
+        // recipeHowToStore: '', 
+        // recipeHowToReheat: '', 
+        // recipeHowToFreeze: '', 
+        // recipeHowToUseRepurposeLeftoversIdeas: [''], 
+        // recipeDishesThatAlsoUseLeftoverIngredients: [pairing],
+        // recipeMealAffinities: [pairing]
+    })
 
     const navigator = useNavigate();
 
@@ -235,15 +267,17 @@ const RecipeComponent = () => {
     // handle prep time
     function handleRecipePrepTimeTotal() {
         let total = 'P';
-        if (recipePrepTimeDays !== 0) {
+        if (recipePrepTimeDays !== '') {
             total = total.concat(recipePrepTimeDays, 'D')
         }
         total = total.concat('T')
-        if (recipePrepTimeHours !== 0) {
+        if (recipePrepTimeHours !== '') {
             total = total.concat(recipePrepTimeHours, 'H')
         }
-        if (recipePrepTimeMinutes !== 0) {
+        if (recipePrepTimeMinutes !== '') {
             total = total.concat(recipePrepTimeMinutes, 'M')
+        } else {
+            total = total.concat('0M')
         }
         return total;
     }
@@ -267,11 +301,13 @@ const RecipeComponent = () => {
     // handle active time
     function handleRecipeActiveTimeTotal() {
         let total = 'PT';
-        if (recipeActiveTimeHours !== 0) {
+        if (recipeActiveTimeHours !== '') {
             total = total.concat(recipeActiveTimeHours, 'H')
         }
-        if (recipeActiveTimeMinutes !== 0) {
+        if (recipeActiveTimeMinutes !== '') {
             total = total.concat(recipeActiveTimeMinutes, 'M')
+        } else {
+            total = total.concat('0M')
         }
         return total;
     }
@@ -291,15 +327,17 @@ const RecipeComponent = () => {
     // TODO: at some point... need to make sure prep time min + active time min < 60 or increment hours instead of only mins... etc....
     function handleRecipeTotalTime() {
         let total = 'P';
-        if (recipeTotalTimeDays !== 0) {
+        if (recipeTotalTimeDays !== '') {
             total = total.concat(recipeTotalTimeDays, 'D')
         }
         total = total.concat('T')
-        if (recipeTotalTimeHours !== 0) {
+        if (recipeTotalTimeHours !== '') {
             total = total.concat(recipeTotalTimeHours, 'H')
         }
-        if (recipeTotalTimeMinutes !== 0) {
+        if (recipeTotalTimeMinutes !== '') {
             total = total.concat(recipeTotalTimeMinutes, 'M')
+        } else {
+            total = total.concat('0M')
         }
         return total;
     }
@@ -846,33 +884,86 @@ const RecipeComponent = () => {
 
     function saveRecipe(e) {
         e.preventDefault();
-        // handle durations
-        let recipePrepTimeTotal = handleRecipePrepTimeTotal();
-        let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
-        let recipeTotalTimeTotal = handleRecipeTotalTime()
+        // validate form
+        if(validateForm()){
 
-        // handle ingredient serialization
-        let ingredientObject = convertIngredientsForSerialization(recipeIngredients);
+                // handle durations
+            let recipePrepTimeTotal = handleRecipePrepTimeTotal();
+            let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
+            let recipeTotalTimeTotal = handleRecipeTotalTime()
+
+            // handle ingredient serialization
+            let ingredientObject = convertIngredientsForSerialization(recipeIngredients);
 
 
-        // convert naming to DTO schema
-        const recipeDTO = convertDTOSchema(recipeName, recipeDescription, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
-            recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
-            recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
-            recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
-            recipeMealAffinities)
+            // convert naming to DTO schema
+            const recipeDTO = convertDTOSchema(recipeName, recipeDescription, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+                recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+                recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+                recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+                recipeMealAffinities)
 
-        // const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
-        //                 recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
-        //                 recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
-        //                 recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
-        //                 recipeMealAffinities}
-        console.log(recipeDTO)
+            // const recipe = {recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+            //                 recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+            //                 recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+            //                 recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+            //                 recipeMealAffinities}
+            console.log(recipeDTO)
 
-        createRecipe(recipeDTO).then((response) => {
-            console.log(response.data);
-            navigator('/recipes')
-        })
+            createRecipe(recipeDTO).then((response) => {
+                console.log(response.data);
+                navigator('/recipes')
+            })
+        }
+
+        
+    }
+
+    // Form Validation Function
+    function validateForm() {
+        let valid = true;
+
+        const errorsCopy = {... errors}
+
+        if (recipeName.trim()) {
+            errorsCopy.recipeName = '';
+            console.log('hit the validateForm true condition... validation should be successful')
+        } else {
+            errorsCopy.recipeName = 'A Recipe Name is required';
+            valid = false;
+            console.log('hit the validateForm false condition... validation should be failed')
+        }
+        if (recipeIngredients == Array.of(ingredient)) {
+            setRecipeIngredients([null]);
+        }
+        if (recipeMethods == ['']) {
+            setRecipeMethods([null]);
+        }
+        if (recipePairsWith == Array.of(pairing)) {
+            setRecipePairsWith([null]);
+        }
+        if (recipePairings == Array.of(pairing)) {
+            setRecipePairings([null]);
+        }
+        if (recipeDishesThatAlsoUseLeftoverIngredients == Array.of(pairing)) {
+            setRecipeDishesThatAlsoUseLeftoverIngredients([null]);
+        }
+        if (recipeOftenMadeAlongside == Array.of(pairing)) {
+            setrecipeOftenMadeAlongside([null]);
+        }
+        if (recipeMealAffinities == Array.of(pairing)) {
+            setRecipeMealAffinities([null]);
+        }
+        if (recipeEquipment == Array.of(equipment)) {
+            setRecipeEquipment([null]);
+        }
+
+        setErrors(errorsCopy)
+        return valid;
+    }
+
+    function validateBlanks() {
+
     }
 
 
@@ -965,7 +1056,7 @@ const RecipeComponent = () => {
         // this functional component renders the ability to add multiple methods and delete said methods
         return (
             <>
-            <label className='form-label'>Recipe Methods:</label>
+            <label className='form-label'>Recipe Methods/Steps:</label>
             <br/>
             <button className='btn btn-success btn-sm' onClick={addMethod}>Additional Method</button>
             {(recipeMethods).map((recipeMethods, index) => {
@@ -977,7 +1068,7 @@ const RecipeComponent = () => {
                             // key={recipeMethods}
                             key={'method'+index}
                             type='text'
-                            placeholder='Enter recipe method'
+                            placeholder='Enter a step'
                             name={recipeMethods}
                             value={recipeMethods}
                             className='form-control'
@@ -1517,11 +1608,15 @@ const RecipeComponent = () => {
                                 placeholder='EnterRecipe Name'
                                 name='recipeName'
                                 value={recipeName}
-                                className='form-control'
+                                // className='form-control'
+                                // Dynamically changing (adding a) className based on form validation
+                                className={`form-control ${ errors.recipeName ? 'is-invalid': ''}`}
                                 onChange={handleRecipeName}
                                 // autoFocus='autoFocus'
                             >
                             </input>
+                            {/* dynamically add div for validation feedback if validation fails */}
+                            { errors.recipeName && <div className='invalid-feedback'> { errors.recipeName} </div>}
                         </div>
 
                         <div className='form-group mb-2'>
@@ -1876,4 +1971,4 @@ const RecipeComponent = () => {
 
 
 
-export default RecipeComponent
+export default CreateRecipeComponent
