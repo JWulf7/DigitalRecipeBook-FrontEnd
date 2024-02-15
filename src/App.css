@@ -9,3 +9,31 @@
     text-align: center;
     color: white;
 }
+
+.recipeName {
+    color: rgb(16, 75, 238);
+    margin-bottom: 0%;
+    position: relative;
+    bottom: 0;
+    font-size: 300%;
+    font-family:  'Gill Sans', 'Calibri', 'Trebuchet MS', sans-serif, 'Gill Sans MT';
+    font-weight: 550;
+}
+
+.emptyRow {
+    /* height: 35px; */
+}
+
+.rowThree {
+    flex-direction: column;
+}
+
+.recipeItal {
+    font-style: italic;
+    color:gray;
+}
+
+.recipeDesc {
+    font-style: italic;
+    color:black;
+}

@@ -11,6 +11,7 @@ const ListRecipeComponent = () => {
     useEffect(() => {
         listRecipes().then((Response) => {
             setRecipes(Response.data);
+            // console.log("useEffect console.log of recipes -> " +recipes)
         }).catch(error => {
             console.error(error);
         })

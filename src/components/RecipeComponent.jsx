@@ -13,6 +13,8 @@ const RecipeComponent = () => {
     useEffect(() => {
         getRecipe(name).then((Response) => {
             setRecipe(Response.data);
+            console.log(recipe)
+            console.log("Response.data -> " + String(Response.data) + " : end of response data")
         }).catch(error => {
             console.error(error);
         })
@@ -24,23 +26,159 @@ const RecipeComponent = () => {
         navigator('/update-recipe')
     }
 
+    {(recipe.name && recipe) 
     return (
-        <div className='container'>
+        
+        
+        <div className='container d-grid gap-3'>
 
-            <h1>{"Hello " + name}</h1>
-            <div className="col g-3"/>
+            {/* <h1>{"Hello " + name}</h1> */}
+            <div className="col g-1"/>
                 <div className="container">
-                    <div className="row" key={'row1'}>
-                        row 1
+                    {/* row 1 */}
+                    <div className="row border border-3 border-warning" key={'row1'}>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row1-col1'}>
+                            <div className="row border border-1 border-warning ms-auto" key={'row1-col1-row1'}>
+
+                                {recipe.category?.map((category, index) => category + (((index+1) < recipe.category.length) ? ' | ' : ''))}
+
+                            </div>
+                            <div className="row border border-1 border-warning ms-auto" key={'row1-col1-row2'}>
+                                {recipe.foodOrDrink}
+                            </div>
+                            <div className="row border border-1 border-warning ms-auto" key={'row1-col1-row3'}>
+                                {recipe.meal?.map((meal, index) => meal + (((index+1) < recipe.meal.length) ? ' | ' : ''))}
+                            </div>
+                            <div className="row border border-1 border-warning ms-auto" key={'row1-col1-row4'}>
+                                {recipe.season + ' season'}
+                            </div>
+                            <div className="row border border-1 border-warning ms-auto" key={'row1-col1-row5'}>
+                                {recipe.rating + ' stars'}
+                            </div>
+                        </div>
+                        <div className="col-1 border border -2 border-info" key={'row1-col2'}>
+                            
+                        </div>
+                        <div className="col-5 border border -2 border-info" key={'row1-col3'}>
+                            <div className="row border border-1 border-warning" key={'row1-col3-row1'}>
+                                <br/>
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col3-row2'}>
+                                <br/>
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col3-row3'}>
+                                {/* <h2 className='recipeName display-3'> */}
+                                {/* <h2 className='recipeName'>
+                                    {String(recipe.name).toUpperCase()}
+                                </h2> */}
+                                    <div className='recipeName'>{String(recipe.name).toUpperCase()}</div>
+                                
+                                    
+                                
+
+                            </div>
+                        </div>
+                        <div className="col-2 border border -2 border-info" key={'row1-col4'}>
+                            <div className="row border border-1 border-warning" key={'row1-col4-row1'}>
+                                <div className='recipeItal'>difficulty
+                                </div>{recipe.easeLevel}
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col4-row2'}>
+                                <br/>
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col4-row3'}>
+                                <br/>
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col4-row4'}>
+                                <br/>
+                            </div>
+                            <div className="row border border-1 border-warning" key={'row1-col4-row5'}>
+                                <br/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="row" key={'row2'}>
-                        row 2
+                    {/* row 2 */}
+                    <div className="row border border-3 border-warning" key={'row2'}>
+                        <div className="col">
+                            Notes:
+                            <ul>
+                                {recipe.notes?.map((note, index) => 
+                                    <li key={'recipeNote' + (index+1)}>note</li>
+                                )}
+                            </ul>
+                            
+                        </div>
+                        <div className="col">
+                            <p className='recipeDesc'>{recipe.description}</p>
+                        </div>
                     </div>
-                    <div className="row" key={'row3'}>
-                        row 3
+
+                    {/* row 3 */}
+                    <div className="row border border-3 border-warning" key={'row3'}>
+                        <div className="col">
+                            <div className="row"></div>
+                            <div className="row d-flex justify-content-center">
+                                <p className="recipeItal d-flex justify-content-center">yield : </p> {recipe.servings} Servings
+                            </div>
+                            <div className="row"></div>
+                            <div className="row"></div>
+                            <div className="row"></div>
+                            
+                        </div>
+                        <div className="col">
+                            <div className="row"><br/></div>
+                            <div className="row">
+                                    <div className="col recipeItal">prep time : </div>
+                                    <div className="col">{recipe.prepTime && convertDuration(recipe.prepTime)}</div>
+                            </div>
+                            <div className="row">
+                                    <div className="col recipeItal">active time : </div>
+                                    <div className="col">{recipe.activeTime && convertDuration(recipe.activeTime)}</div>
+                            </div>
+                            <div className="row">
+                                    <div className="col recipeItal">total time : </div>
+                                    <div className="col">{recipe.totalTime && convertDuration(recipe.totalTime)}</div>
+                            </div>
+                            <div className="row"><br/></div>
+                        </div>
+                        <div className="col">
+                            <div className="row"><br/></div>
+                            <div className="row">
+                                    <p className='recipeDesc'>Version : <div>{recipe.version}</div></p> 
+                            </div>
+                            <div className="row"><br/></div>
+                            <div className="row"><br/></div>
+                            <div className="row"><br/></div>
+                        </div>
                     </div>
-                    <div className="row" key={'row4'}>
-                        row 4
+                    {/* row 4 */}
+                    <div className="row border border-3 border-warning" key={'row4'}>
+                        <div className="col ">
+                            <p className='recipeItal d-flex justify-content-center'>ingredients : </p>
+                            <div className='d-flex justify-content-center'>
+                            <ul>
+                                {recipe.ingredients && (parseIngredients(recipe?.ingredients).map(([ingKey, ingValue], index) => <li key={'ingredient'+index}>{ingValue} {ingKey}</li>))}
+                            </ul>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <p className='recipeItal d-flex justify-content-center'>equipment : </p>
+                            <div className='d-flex justify-content-center'>
+                            <ul>
+                                {recipe.equipment?.map((equip, index) => <li key={'equip' + index}>{equip.name}</li>)}
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* row 5 */}
+                    {/* <div className="row border border-3 border-warning offset-sm-1" key={'row5'}> */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row5'}>
+                            <div className='d-flex justify-content-center recipeItal'>Procedure :</div>
+                             
+                            <ol className=''>
+                                {recipe.method?.map((step, index) => <li className='d-flex justify-content-center' key={'step' + index}>{(index+1) +'. ' +step}</li>)}
+                            </ol>
                     </div>
                 </div>
 
@@ -54,9 +192,9 @@ const RecipeComponent = () => {
 
         </div>
 
-
-
-    )
+        
+        
+    )}
 
     // return (
     //     <div className='container'>
