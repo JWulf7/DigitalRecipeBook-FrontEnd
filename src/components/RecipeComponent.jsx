@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createRecipe, getRecipe } from '../services/RecipeService'
 import { useNavigate, useParams } from 'react-router-dom'
+import Collapsible from 'react-collapsible'
 
 const RecipeComponent = () => {
 
@@ -116,7 +117,7 @@ const RecipeComponent = () => {
                     {/* row 3 */}
                     <div className="row border border-3 border-warning" key={'row3'}>
                         <div className="col">
-                            <div className="row"></div>
+                            <div className="row"><br/></div>
                             <div className="row d-flex justify-content-center">
                                 <p className="recipeItal d-flex justify-content-center">yield : </p> {recipe.servings} Servings
                             </div>
@@ -144,7 +145,8 @@ const RecipeComponent = () => {
                         <div className="col">
                             <div className="row"><br/></div>
                             <div className="row">
-                                    <p className='recipeDesc'>Version : <div>{recipe.version}</div></p> 
+                                    {/* <p className='recipeDesc'>Version : <div>{recipe.version}</div></p>  */}
+                                    <p className='recipeItal'>Version : <span className='recipeDesc'>{recipe.version}</span></p> 
                             </div>
                             <div className="row"><br/></div>
                             <div className="row"><br/></div>
@@ -180,6 +182,159 @@ const RecipeComponent = () => {
                                 {recipe.method?.map((step, index) => <li className='d-flex justify-content-center' key={'step' + index}>{(index+1) +'. ' +step}</li>)}
                             </ol>
                     </div>
+
+                    {/* row 6 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row6'}>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row6-col1'}>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row6-col2'}>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row6-col3'}>
+                            <div className='d-flex justify-content-center recipeItal'>from :</div>
+                            {recipe.author}, {recipe.origin}
+                        </div>
+                            
+                    </div>
+
+                    {/* row 7 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row7'}>
+                            <div className='d-flex justify-content-center recipeItal'>Pictures :</div>
+                            <div className='d-flex justify-content-center'></div>
+                            
+                    </div>
+
+                    {/* row 8 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row8'}>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col1'}>
+                            <div className='d-flex justify-content-center recipeItal'>storage</div>
+                            <div className='d-flex justify-content-center'>{recipe.howToStore}</div>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col2'}>
+                            <div className='d-flex justify-content-center recipeItal'>reheat</div>
+                            <div className='d-flex justify-content-center'>{recipe.howToReheat}</div>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col3'}>
+                            <div className='d-flex justify-content-center recipeItal'>freeze</div>
+                            <div className='d-flex justify-content-center'>{recipe.howToFreeze}</div>
+                        </div>
+                            
+                    </div>
+
+                    {/* row 9 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row9'}>
+                        <div className="col-sm-6 border border -2 border-info ms-auto" key={'row9-col1'}>
+                            <div className='d-flex justify-content-center recipeItal'>repurpose leftovers</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.howToUseRepurposeLeftoversIdeas?.map((idea, index) => <li key={'repurposeIdea' + index}>{idea}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col-sm-6 border border -2 border-info ms-auto" key={'row9-col2'}>
+                            <div className='d-flex justify-content-center recipeItal'>leftover ingredients</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.dishesThatAlsoUseLeftoverIngredients?.map((dish, index) => <li key={'leftoverDish' + index}>{dish.name}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                            
+                    </div>
+
+                    {/* row 10 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row10'}>
+                        <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col1'}>
+                            <div className='d-flex justify-content-center recipeItal'>often made alongside</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.oftenMadeAlongside?.map((dish, index) => <li key={'oftenAlongside' + index}>{dish.name}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col2'}>
+                            <div className='d-flex justify-content-center recipeItal'>pairings</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.pairings?.map((dish, index) => <li key={'pairings' + index}>{dish.name}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col3'}>
+                            <div className='d-flex justify-content-center recipeItal'>meal affinities</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.mealAffinities?.map((affinity, index) => <li key={'affinity' + index}>{affinity.name}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col4'}>
+                            <div className='d-flex justify-content-center recipeItal'>pairs with</div>
+                            <div className='d-flex justify-content-center'>
+                                <ul>
+                                    {recipe.pairsWith?.map((dish, index) => <li key={'pairsWith' + index}>{dish.name}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                            
+                    </div>
+
+                    {/* row 11 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row11'}>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col1'}>
+                            <div className='d-flex justify-content-center recipeItal'>created</div>
+                            <div className='d-flex justify-content-center'>{recipe.created}</div>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col2'}>
+                            <div className='d-flex justify-content-center recipeItal'>last cooked</div>
+                            {/* <div className='d-flex justify-content-center'>{recipe.allDatesCooked[0]}</div> */}
+                            <div className='d-flex justify-content-center'>{recipe.allDatesCooked && recipe.allDatesCooked[0]}
+                            
+                            </div>
+                            
+                            {/* <Collapsible trigger='more...' triggerWhenOpen='less...'> */}
+                            <Collapsible trigger={<button type="button" className="btn btn-primary btn-circle btn-sm">+</button>} 
+                                        triggerWhenOpen={<button type="button" className="btn btn-primary btn-circle btn-sm">-</button>}>
+                                {/* <button className="btn btn-circle" onClick={() => {this.toggle.bind('demo') }}>
+                                    This button collapses
+                                </button> */}
+                                <ul>
+                                    {recipe.allDatesCooked?.map((date, index) => ((index > 0) ? <li key={'allDatesCooded' + index}  className='d-flex justify-content-center'>{date}</li> : false))}
+                                    
+                                    {/* // <li key={'allDatesCooded' + index}>{(index > 0)&&{date}}</li>)} */}
+                                </ul>
+                                {/* <ul>
+                                    {recipe.allDatesCooked?.map((date, index) => <li key={'allDatesCooded' + index}>{(index > 0)&&{date}}</li>)}
+                                </ul> */}
+                            </Collapsible>
+                        </div>
+                        <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col3'}>
+                            <div className='d-flex justify-content-center recipeItal'>updated</div>
+                            <div className='d-flex justify-content-center'>{recipe.allDatesUpdated && recipe.allDatesUpdated[0]}
+                            
+                            </div>
+                            
+                            <Collapsible trigger={<button type="button" className="btn btn-primary btn-circle btn-sm">+</button>} 
+                                        triggerWhenOpen={<button type="button" className="btn btn-primary btn-circle btn-sm">-</button>}>
+
+                                <ul>
+                                    {recipe.allDatesUpdated?.map((date, index) => ((index > 0) ? <li key={'allDatesUpdated' + index}  className='d-flex justify-content-center'>{date}</li> : false))}
+                                    
+                                </ul>
+
+                            </Collapsible>
+                        </div>
+                            
+                    </div>
+
+                    {/* row 12 */}
+                    <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row12'}>
+                            <div className='d-flex justify-content-center recipeItal'>Tags :</div>
+                            <div className='d-flex justify-content-center'>
+                                {recipe.tags?.map((tag, index) => '#'+ tag + (((index+1) < recipe.tags.length) ? ' | ' : ''))}
+                            </div>
+                            
+                    </div>
+
                 </div>
 
 
