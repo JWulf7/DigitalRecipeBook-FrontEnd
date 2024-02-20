@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import { listRecipes } from '../services/RecipeService'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import RecipeNameSearchBar from './RecipeNameSearchBar'
+
 
 const ListRecipeComponent = () => {
 
@@ -206,11 +208,28 @@ const ListRecipeComponent = () => {
         navigator('/add-recipe')
     }
 
+    function gotoRecipe(name) {
+        navigator('/recipe/:'+name)
+    }
+
   return (
     <div className='container'>
 
         <h2 className='text-center'>List of Recipes</h2>
-        <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
+        <div>
+            <div className="row">
+                <div className="col col-sm">
+                    <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
+                </div>
+                <div className="col"><br/></div>
+                    
+                <div className="col"><br/></div>
+            
+                <div className="col col-sm d-flex justify-content-end">
+                    <RecipeNameSearchBar placeholder="Enter a Recipe Name" data={recipes}/>  
+                </div>
+            </div>
+        </div>
         <table className='table table-striped table-bordered' height='100%'>
             <thead>
                 <tr>
@@ -258,7 +277,7 @@ const ListRecipeComponent = () => {
                     recipes.map(recipe =>    
                         <tr key={recipe.id}>
                             <td>{recipe.id}</td>
-                            <td>{recipe.name}</td>
+                            <td><Link to={'/recipe/'+recipe.name}>{recipe.name}</Link></td>
                             <td>{recipe.description}</td>
                             <td>{recipe.version}</td>
                             <td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>
