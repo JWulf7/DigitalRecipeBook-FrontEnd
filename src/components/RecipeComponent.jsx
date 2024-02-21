@@ -23,8 +23,10 @@ const RecipeComponent = () => {
     }, [])
 
 
-    function updateRecipe() {
-        navigator('/update-recipe')
+    function updateRecipe(name) {
+        const navTo = '/recipe/'+ name + '/update';
+        navigator(navTo);
+        // navigator('/recipe/:name/update')
     }
 
     {(recipe.name && recipe) 
@@ -35,6 +37,9 @@ const RecipeComponent = () => {
 
             {/* <h1>{"Hello " + name}</h1> */}
             <div className="col g-1"/>
+                <div className="container">
+                    <button className='btn btn-primary mb-2' onClick={() => updateRecipe(recipe.name)}>Update Recipe</button>
+                </div>
                 <div className="container">
                     {/* row 1 */}
                     <div className="row border border-3 border-warning" key={'row1'}>
