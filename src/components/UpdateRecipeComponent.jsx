@@ -1253,12 +1253,156 @@ const UpdateRecipeComponent = () => {
                                 className={`recipeNameUpdate form-control form-control-lg ${ errors.recipeName ? 'is-invalid': ''}`}
                                 onChange={handleRecipeName}
                                 style={{'font-size':'300%'}}
+                                id='recipeName'
                             >
                             </input>
+                            <label for="recipeName">recipe name</label>
                             {/* dynamically add div for validation feedback if validation fails */}
                             { errors.recipeName && <div className='invalid-feedback'> { errors.recipeName} </div>}
             </>
 
+        )
+    }
+
+    function easeLevelDiv() {
+        return(
+            <>
+                            <select className="form-select form-select-sm" aria-label="Small select example" id='recipeEaseLevelControlSelect' onChange={handleRecipeEaseLevel} placeholder={recipeEaseLevel}>
+                                <option value="EASELEVEL">EaseLevel</option>
+                                <option value="EASY">Easy</option>
+                                <option value="EASYMEDIUM">Easy-Medium</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="MEDIUMHARD">Medium-Hard</option>
+                                <option value="HARD">Hard</option>
+                            </select>
+                            <label className='floatingSelect'>Ease Level</label>
+            </>
+
+        )
+    }
+
+    function notesDiv() {
+        // this functional component renders the ability to add multiple notes and delete said notes
+        return (
+            <>
+            {/* <label className='form-label'>Recipe Notes:</label>
+            <br/> */}
+            <button className='btn btn-success btn-sm' onClick={addNote}>Additional Note</button>
+            {(recipeNotes)?.map((recipeNotes, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'recipeNotes'+index}>
+                        <input
+                            key={'recipeNote'+index}
+                            type='text'
+                            // placeholder='Enter recipe note'
+                            placeholder={recipeNotes}
+                            name={recipeNotes}
+                            value={recipeNotes}
+                            className='form-control'
+                            onChange={handleRecipeNotes}
+                            // autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeNote(recipeNotes, e)}>Remove Note</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+    function descriptionDiv() {
+        return (
+            <>
+                <div className='form-group mb-2 recipeDesc form-floating'>
+                    {/* <label className='form-label'>Recipe Description:</label> */}
+                    <input
+                        type='text'
+                        // placeholder='Enter Recipe Description'
+                        placeholder={recipeDescription}
+                        name='recipeDescription'
+                        value={recipeDescription}
+                        className='form-control'
+                        onChange={handleRecipeDescription}
+                        id='recipeDescription'
+                    >
+                    </input>
+                    <label for="recipeDescription">description</label>
+                </div>
+            </>
+        )
+    }
+
+    function recipeServingsDiv() {
+        return (
+            <>
+                {/* <div className='form-group mb-2 form-floating'> */}
+                    
+                    <input
+                        type='number'
+                        min='1'
+                        max='100'
+                        // placeholder='Enter Recipe Servings'
+                        placeholder={recipeServings}
+                        name='recipeServings'
+                        value={recipeServings}
+                        className='form-control'
+                        onChange={handleRecipeServings}
+                        id='recipeServings'
+                    >
+                    </input>
+                    <label for='recipeServings'>Recipe Servings:</label>
+                {/* </div> */}
+            </>
+        )
+    }
+
+    function prepTimeDiv() {
+        return (
+            <>
+                {/* prep time */}
+                <div className='form-group mb-2'>
+                            <label className='form-label'>Recipe Prep Time:</label>
+                            <input
+                                type='number'
+                                min='0'
+                                max='100'
+                                // placeholder='Days'
+                                placeholder={recipePrepTimeDays}
+                                name='recipePrepTimeDays'
+                                value={recipePrepTimeDays}
+                                className='form-control'
+                                onChange={handleRecipePrepTimeDays}
+                            >
+                            </input>
+                            <input
+                                type='number'
+                                min='0'
+                                max='23'
+                                // placeholder='Hours'
+                                placeholder={recipePrepTimeHours}
+                                name='recipePrepTimeHours'
+                                value={recipePrepTimeHours}
+                                className='form-control'
+                                onChange={handleRecipePrepTimeHours}
+                            >
+                            </input>
+                            <input
+                                type='number'
+                                min='0'
+                                max='59'
+                                // placeholder='Minutes'
+                                placeholder={recipePrepTimeMinutes}
+                                name='recipePrepTimeMinutes'
+                                value={recipePrepTimeMinutes}
+                                className='form-control'
+                                onChange={handleRecipePrepTimeMinutes}
+                            >
+                            </input>
+                        </div>
+            </>
         )
     }
 
@@ -1339,7 +1483,7 @@ const UpdateRecipeComponent = () => {
                                 <div className="row border border-1 border-warning" key={'row1-col3-row2'}>
                                     <br/>
                                 </div>
-                                <div className="row border border-1 border-warning" key={'row1-col3-row3'}>
+                                <div className="row border border-1 border-warning form-floating" key={'row1-col3-row3'}>
                                         {/* <div className='recipeName'>{String(recipe.name).toUpperCase()}</div> */}
 
                                         {nameDiv()}
@@ -1350,9 +1494,10 @@ const UpdateRecipeComponent = () => {
                                 </div>
                             </div>
                             <div className="col-2 border border -2 border-info" key={'row1-col4'}>
-                                <div className="row border border-1 border-warning" key={'row1-col4-row1'}>
-                                    <div className='recipeItal'>difficulty
-                                    </div>{recipe.easeLevel}
+                                <div className="row border border-1 border-warning form-floating" key={'row1-col4-row1'}>
+                                    {/* <div className='recipeItal'>difficulty
+                                    </div>{recipe.easeLevel} */}
+                                    {easeLevelDiv()}
                                 </div>
                                 <div className="row border border-1 border-warning" key={'row1-col4-row2'}>
                                     <br/>
@@ -1371,16 +1516,17 @@ const UpdateRecipeComponent = () => {
                         {/* row 2 */}
                         <div className="row border border-3 border-warning" key={'row2'}>
                             <div className="col">
-                                Notes:
+                                {/* Notes:
                                 <ul>
                                     {recipe.notes?.map((note, index) => 
                                         <li key={'recipeNote' + (index+1)}>note</li>
                                     )}
-                                </ul>
-                                
+                                </ul> */}
+                                {notesDiv()}
                             </div>
                             <div className="col">
-                                <p className='recipeDesc'>{recipe.description}</p>
+                                {/* <p className='recipeDesc'>{recipe.description}</p> */}
+                                {descriptionDiv()}
                             </div>
                         </div>
     
@@ -1388,8 +1534,10 @@ const UpdateRecipeComponent = () => {
                         <div className="row border border-3 border-warning" key={'row3'}>
                             <div className="col">
                                 <div className="row"><br/></div>
-                                <div className="row d-flex justify-content-center">
-                                    <p className="recipeItal d-flex justify-content-center">yield : </p> {recipe.servings} Servings
+                                <div className="row d-flex justify-content-center form-group mb-2 form-floating">
+                                    {/* <p className="recipeItal d-flex justify-content-center">yield : </p> {recipe.servings} Servings */}
+                                    
+                                    {recipeServingsDiv()}
                                 </div>
                                 <div className="row"></div>
                                 <div className="row"></div>
@@ -1399,8 +1547,9 @@ const UpdateRecipeComponent = () => {
                             <div className="col">
                                 <div className="row"><br/></div>
                                 <div className="row">
-                                        <div className="col recipeItal">prep time : </div>
-                                        <div className="col">{recipe.prepTime && convertDuration(recipe.prepTime)}</div>
+                                        {/* <div className="col recipeItal">prep time : </div>
+                                        <div className="col">{recipe.prepTime && convertDuration(recipe.prepTime)}</div> */}
+                                        {prepTimeDiv()}
                                 </div>
                                 <div className="row">
                                         <div className="col recipeItal">active time : </div>
@@ -1636,7 +1785,7 @@ const UpdateRecipeComponent = () => {
       }
     
     
-      function convertDuration(t){ 
+    function convertDuration(t){ 
         //dividing period from time
         var x = t.split('T'),
             duration = '',
@@ -1701,6 +1850,10 @@ const UpdateRecipeComponent = () => {
     
         duration += time.M + ':' + time.S;
         return duration;
+    }
+
+    function splitSetDuration(t) {
+        // work on this tomorrow.. start here!
     }
     
 }
