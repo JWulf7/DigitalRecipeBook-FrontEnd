@@ -38,19 +38,28 @@ const UpdateRecipeComponent = () => {
 
     function setWholeRecipe(recipe) {
         // set all state variables w/ incoming recipe data
+        console.log("starting setWholeRecipe() function")
         {(recipe && setRecipeName(recipe.name)); 
             setRecipeDescription(recipe.description);
             setRecipeIngredients([...parseIngredients(recipe.ingredients)]);
             setRecipeMethods([...recipe.method]);
             setRecipeServings(recipe.servings);
-            // setRecipePrepTimeDays()
-            // setRecipePrepTimeHours
-            // setRecipePrepTimeMinutes
-            // setRecipeActiveTimeHours
-            // setRecipeActiveTimeMinutes
-            // setRecipeTotalTimeDays
-            // setRecipeTotalTimeHours
-            // setRecipeTotalTimeMinutes
+            console.log("in setWholeRecipe(), about to hit splitSetDuration()")
+            // splitSetDuration();
+            setRecipePrepTimeDays(splitSetDuration(recipe.prepTime).days)
+            console.log("after setting, recipePrepTimeDays = ->")
+            console.log(recipePrepTimeDays)
+            setRecipePrepTimeHours(splitSetDuration(recipe.prepTime).hours)
+            console.log("after setting, recipePrepTimeHours = ->")
+            console.log(recipePrepTimeHours)
+            setRecipePrepTimeMinutes(splitSetDuration(recipe.prepTime).minutes)
+            console.log("after setting, recipePrepTimeMinutes = ->")
+            console.log(recipePrepTimeMinutes)
+            setRecipeActiveTimeHours(splitSetDuration(recipe.activeTime).hours)
+            setRecipeActiveTimeMinutes(splitSetDuration(recipe.activeTime).minutes)
+            setRecipeTotalTimeDays(splitSetDuration(recipe.totalTime).days)
+            setRecipeTotalTimeHours(splitSetDuration(recipe.totalTime).hours)
+            setRecipeTotalTimeMinutes(splitSetDuration(recipe.totalTime).minutes)
             setRecipeEquipment([...recipe.equipment])
             setRecipePairings([...recipe.pairings])
             setRecipeNotes([...recipe.notes])
@@ -60,7 +69,7 @@ const UpdateRecipeComponent = () => {
             setRecipePictures([...recipe.pictures])
             setrecipeOftenMadeAlongside([recipe.oftenMadeAlongside])
             setRecipeSeasonality(recipe.seasonality)
-            setRecipeTags([recipe.tags])
+            setRecipeTags([...recipe.tags])
             setRecipePairsWith([...recipe.pairsWith])
             setRecipeOrigin(recipe.origin)
             setRecipeEaseLevel(recipe.easeLevel)
@@ -1363,8 +1372,9 @@ const UpdateRecipeComponent = () => {
         return (
             <>
                 {/* prep time */}
-                <div className='form-group mb-2'>
-                            <label className='form-label'>Recipe Prep Time:</label>
+                {/* <div className='form-group mb-2 form-floating'> */}
+                            {/* <label className='form-label'>Recipe Prep Time:</label> */}
+                            <div className="form-floating d-flex">
                             <input
                                 type='number'
                                 min='0'
@@ -1375,8 +1385,12 @@ const UpdateRecipeComponent = () => {
                                 value={recipePrepTimeDays}
                                 className='form-control'
                                 onChange={handleRecipePrepTimeDays}
+                                id='recipePrepTimeDays'
                             >
                             </input>
+                            <label for='recipePrepTimeDays' className='align-items-right'>Prep Time Days</label>
+                            </div>
+                            <div className="form-floating d-flex">
                             <input
                                 type='number'
                                 min='0'
@@ -1387,8 +1401,12 @@ const UpdateRecipeComponent = () => {
                                 value={recipePrepTimeHours}
                                 className='form-control'
                                 onChange={handleRecipePrepTimeHours}
+                                id='recipePrepTimeHours'
                             >
                             </input>
+                            <label for='recipePrepTimeHours'>Prep Time Hours</label>
+                            </div>
+                            <div className="form-floating">
                             <input
                                 type='number'
                                 min='0'
@@ -1399,12 +1417,577 @@ const UpdateRecipeComponent = () => {
                                 value={recipePrepTimeMinutes}
                                 className='form-control'
                                 onChange={handleRecipePrepTimeMinutes}
+                                id='recipePrepTimeMinutes'
                             >
                             </input>
-                        </div>
+                            <label for='recipePrepTimeMinutes'>Prep Time Minutes</label>
+                            </div>
+                        {/* </div> */}
             </>
         )
     }
+
+    function activeTimeDiv() {
+        return (
+            <>
+                {/* prep time */}
+                {/* <div className='form-group mb-2 form-floating'> */}
+                            {/* <label className='form-label'>Recipe Prep Time:</label> */}
+                            <div className="form-floating d-flex">
+                            <input
+                                type='number'
+                                min='0'
+                                max='23'
+                                // placeholder='Hours'
+                                placeholder={recipeActiveTimeHours}
+                                name='recipeActiveTimeHours'
+                                value={recipeActiveTimeHours}
+                                className='form-control'
+                                onChange={handleRecipeActiveTimeHours}
+                                id='recipeActiveTimeHours'
+                            >
+                            </input>
+                            <label for='recipeActiveTimeHours'>Active Time Hours</label>
+                            </div>
+                            <div className="form-floating">
+                            <input
+                                type='number'
+                                min='0'
+                                max='59'
+                                // placeholder='Minutes'
+                                placeholder={recipeActiveTimeMinutes}
+                                name='recipeActiveTimeMinutes'
+                                value={recipeActiveTimeMinutes}
+                                className='form-control'
+                                onChange={handleRecipeActiveTimeMinutes}
+                                id='recipeActiveTimeMinutes'
+                            >
+                            </input>
+                            <label for='recipeActiveTimeMinutes'>Active Time Minutes</label>
+                            </div>
+                        {/* </div> */}
+            </>
+        )
+    }
+
+    function totalTimeDiv() {
+        return (
+            <>
+                {/* prep time */}
+                {/* <div className='form-group mb-2 form-floating'> */}
+                            {/* <label className='form-label'>Recipe Prep Time:</label> */}
+                            <div className="form-floating d-flex">
+                            <input
+                                type='number'
+                                min='0'
+                                max='100'
+                                // placeholder='Days'
+                                placeholder={recipeTotalTimeDays}
+                                name='recipeTotalTimeDays'
+                                value={recipeTotalTimeDays}
+                                className='form-control'
+                                onChange={handleRecipeTotalTimeDays}
+                                id='recipeTotalTimeDays'
+                            >
+                            </input>
+                            <label for='recipeTotalTimeDays' className='align-items-right'>Total Time Days</label>
+                            </div>
+                            <div className="form-floating d-flex">
+                            <input
+                                type='number'
+                                min='0'
+                                max='23'
+                                // placeholder='Hours'
+                                placeholder={recipeTotalTimeHours}
+                                name='recipeTotalTimeHours'
+                                value={recipeTotalTimeHours}
+                                className='form-control'
+                                onChange={handleRecipeTotalTimeHours}
+                                id='recipeTotalTimeHours'
+                            >
+                            </input>
+                            <label for='recipeTotalTimeHours'>Total Time Hours</label>
+                            </div>
+                            <div className="form-floating">
+                            <input
+                                type='number'
+                                min='0'
+                                max='59'
+                                // placeholder='Minutes'
+                                placeholder={recipeTotalTimeMinutes}
+                                name='recipeTotalTimeMinutes'
+                                value={recipeTotalTimeMinutes}
+                                className='form-control'
+                                onChange={handleRecipeTotalTimeMinutes}
+                                id='recipeTotalTimeMinutes'
+                            >
+                            </input>
+                            <label for='recipeTotalTimeMinutes'>Total Time Minutes</label>
+                            </div>
+                        {/* </div> */}
+            </>
+        )
+    }
+
+    function ingredientsDiv() { 
+                // this functional component renders the ability to add multiple ingredients and delete said ingredients
+        return (
+            <>
+            {/* <label className='form-label'>Recipe Ingredients:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
+
+            {/* can experiment to make buttons +'s and -'s on the left and right... from https://codepen.io/dartokloning/pen/ZEBjgWm */}
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}><span class="glyphicon glyphicon-plus"></span></button> */}
+            {/* can also experiment w/ this to move buttons to right */}
+            {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div> */}
+            {/* <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button> */}
+            {(recipeIngredients)?.map((recipeIngredients, index) => {
+                console.log("iterating through recipeIngredients")
+                console.log("recipeIngredients = ->")
+                console.log(recipeIngredients)
+                return(
+                    
+                    // <div className='form-group mb-2' key={recipeIngredients.ingredientName}>
+                    <div className='form-group mb-2' key={'recipeIngredient'+ index}>
+                        <input
+                            key={'ingredientName:' + index}
+                            ind={recipeIngredients.ingredientName}
+                            type='text'
+                            placeholder={recipeIngredients[0]}
+                            // placeholder={'ingredientName:' + recipeIngredients.ingredientName}
+                            name='recipeIngredients'
+                            value={recipeIngredients.ingredientName}
+                            className='form-control'
+                            onChange={handleRecipeIngredients}
+                            // autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        {/* {ingredientQtyDiv(recipeIngredients)} */}
+                        <input
+                            key={'ingredientName.ingredientQty:' + index}
+                            ingname={recipeIngredients.ingredientName}
+                            type='text'
+                            placeholder={recipeIngredients[1]}
+                            // placeholder={'ingredientName:' + recipeIngredients.ingredientName + '.ingredientQty:' + recipeIngredients.ingredientQty}
+                            name='recipeIngredientsQty'
+                            value={recipeIngredients.ingredientQty}
+                            className='form-control'
+                            onChange={handleRecipeIngredientsQty}
+                            // autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}>Remove Ingredient</button>
+                        {/* <button className='btn btn-danger btn-sm' onClick={(e) => removeIngredient(recipeIngredients.ingredientName, e)}><span class="glyphicon glyphicon-minus"></span></button> */}
+                        
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function equipmentDiv() {
+        // this functional component renders the ability to add multiple equipment and delete said equipment
+        return (
+            <>
+            {/* <label className='form-label'>Recipe Equipment:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addEquipment}>Additional Equipment</button> */}
+            {(recipeEquipment)?.map((recipeEquipment, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'recipeEquipment'+index}>
+                        <input
+                            key={'recipeEquipmentName'+index}
+                            type='text'
+                            placeholder={recipeEquipment.name}
+                            name={recipeEquipment.name}
+                            value={recipeEquipment.name}
+                            className='form-control'
+                            onChange={handleRecipeEquipment}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeEquipment(recipeEquipment.name, e)}>Remove Equipment</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function methodsDiv() {
+        // this functional component renders the ability to add multiple methods and delete said methods
+        return (
+            <>
+            {/* <label className='form-label'>Recipe Methods/Steps:</label> */}
+            <br/>
+            <button className='btn btn-success btn-sm' onClick={addMethod}>Additional Method</button>
+            {(recipeMethods)?.map((recipeMethods, index) => {
+                return(
+                    
+                    // <div className='form-group mb-2' key={recipeMethods}>
+                    <div className='form-group mb-2' key={'recipeMethods' + index}>
+                        {(index +1) + "."}
+                        <input
+                            // key={recipeMethods}
+                            key={'method'+index}
+                            type='text'
+                            placeholder= {recipeMethods}
+                            name={recipeMethods}
+                            value={recipeMethods}
+                            className='form-control'
+                            onChange={handleRecipeMethods}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeMethod(recipeMethods, e)}>Remove Method</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+    function authorDiv() {
+        return(
+            <>
+                {/* author */}
+                <div className='form-group mb-2 form-floating'>
+                    {/* <label className='form-label'>Recipe Author:</label> */}
+                    <input
+                        type='text'
+                        placeholder={recipeAuthor}
+                        name='recipeAuthor'
+                        value={recipeAuthor}
+                        className='form-control'
+                        onChange={handleRecipeAuthor}
+                        id='recipeAuthor'
+                    >
+                    </input>
+                    <label for='recipeAuthor'>Author</label>
+                </div>
+            </>
+        )
+    }
+
+    function originDiv() {
+        return(
+            <>
+                {/* origin */}
+                <div className='form-group mb-2 form-floating'>
+                    {/* <label className='form-label'>Recipe Origin:</label> */}
+                    <input
+                        type='text'
+                        placeholder={recipeOrigin}
+                        name='recipeOrigin'
+                        value={recipeOrigin}
+                        className='form-control'
+                        onChange={handleRecipeOrigin}
+                        id='recipeOrigin'
+                    >
+                    </input>
+                    <label for='recipeOrigin'>Origin</label>
+                </div>
+            </>
+        )
+    }
+
+    function storageDiv() {
+        return(
+            <>
+                {/* how to store */}
+                <div className='form-group mb-2'>
+                    {/* <label className='form-label'>How To Store:</label> */}
+                    <textarea
+                        // type='textarea'
+                        placeholder={recipeHowToStore}
+                        name='recipeHowToStore'
+                        value={recipeHowToStore}
+                        className='form-control'
+                        onChange={handleRecipeHowToStore}
+                        rows='1'
+                    />
+                </div>
+            </>
+        )
+    }
+
+    function reheatDiv() {
+        return(
+            <>
+                {/* how to reheat */}
+                <div className='form-group mb-2'>
+                    {/* <label className='form-label'>How To Reheat:</label> */}
+                    <textarea
+                        placeholder={recipeHowToReheat}
+                        name='recipeHowToReheat'
+                        value={recipeHowToReheat}
+                        className='form-control'
+                        onChange={handleRecipeHowToReheat}
+                        rows='1'
+                    />
+                </div>
+            </>
+        )
+    }
+
+    function freezeDiv() {
+        return(
+            <>
+                {/* how to freeze */}
+                <div className='form-group mb-2'>
+                    {/* <label className='form-label'>How To Freeze:</label> */}
+                    <textarea
+                        placeholder={recipeHowToFreeze}
+                        name='recipeHowToFreeze'
+                        value={recipeHowToFreeze}
+                        className='form-control'
+                        onChange={handleRecipeHowToFreeze}
+                        rows='1'
+                    />
+                </div>
+            </>
+        )
+    }
+
+    function useLeftoversIdeasDiv() {
+        // this functional component renders the ability to add multiple notes and delete said notes
+        return (
+            <>
+            {/* <label className='form-label'>How to use/repurpose leftovers ideas:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addIdea}>Additional Idea</button> */}
+            {(recipeHowToUseRepurposeLeftoversIdeas)?.map((recipeHowToUseRepurposeLeftoversIdeas, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'howToUseRepurposeLeftoversIdeasDiv'+index}>
+                        <input
+                            key={'howToUseRepurposeLeftoversIdeasInput'+index}
+                            type='text'
+                            placeholder={recipeHowToUseRepurposeLeftoversIdeas}
+                            name={recipeHowToUseRepurposeLeftoversIdeas}
+                            value={recipeHowToUseRepurposeLeftoversIdeas}
+                            className='form-control'
+                            onChange={handleRecipeHowToUseRepurposeLeftoversIdeas}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeIdea(recipeHowToUseRepurposeLeftoversIdeas, e)}>Remove Idea</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+    function leftoverIngredientsDiv() {
+        // this functional component renders the ability to add multiple dishes and delete said dishes
+        return (
+            <>
+            {/* <label className='form-label'>Dishes that also use leftover ingredients:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addDishLeftoverIngredients}>Additional Dish</button> */}
+            {(recipeDishesThatAlsoUseLeftoverIngredients)?.map((recipeDishesThatAlsoUseLeftoverIngredients, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'dishesThatAlsoUseLeftoverIngredientsDiv'+index}>
+                        <input
+                            key={'dishesThatAlsoUseLeftoverIngredientsInput'+index}
+                            type='text'
+                            placeholder={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            name={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            value={recipeDishesThatAlsoUseLeftoverIngredients.name}
+                            className='form-control'
+                            onChange={handleRecipeDishesThatAlsoUseLeftoverIngredients}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeDishLeftoverIngredients(recipeDishesThatAlsoUseLeftoverIngredients.name, e)}>Remove Dish</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function oftenMadeAlongsideDiv() {
+        // this functional component renders the ability to add multiple recipe's this recipe is often made alongside and delete said recipe associations
+        return (
+            <>
+            {/* <label className='form-label'>Recipes Often Made Alongside:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addOftenMadeAlongside}>Additional Recipe made alongside</button> */}
+            {(recipeOftenMadeAlongside)?.map((recipeOftenMadeAlongside, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'oftenMadeAlongsideDiv'+index}>
+                        <input
+                            key={'oftenMadeAlongsideInput'+index}
+                            type='text'
+                            placeholder={recipeOftenMadeAlongside.name}
+                            name={recipeOftenMadeAlongside.name}
+                            value={recipeOftenMadeAlongside.name}
+                            className='form-control'
+                            onChange={handleRecipeOftenMadeAlongside}
+                            // autoFocus='autoFocus'
+                            
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeOftenMadeAlongside(recipeOftenMadeAlongside.name, e)}>Remove Recipe</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function pairingsDiv() {
+        // this functional component renders the ability to add multiple pairings and delete said pairings
+        return (
+            <>
+            {/* <label className='form-label'>Recipe Pairings:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addPairing}>Additional Pairing</button> */}
+            {(recipePairings)?.map((recipePairings, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'recipePairings'+index}>
+                        <input
+                            key={'recipePairings.name'+index}
+                            type='text'
+                            placeholder={recipePairings.name}
+                            name={recipePairings.name}
+                            value={recipePairings.name}
+                            className='form-control'
+                            onChange={handleRecipePairings}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removePairing(recipePairings.name, e)}>Remove Pairing</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function mealAffinitiesDiv() {
+        // this functional component renders the ability to add multiple affinities and delete said affinities
+        return (
+            <>
+            {/* <label className='form-label'>Meal Affinities:</label> */}
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addMealAffinity}>Additional Affinity</button> */}
+            {(recipeMealAffinities)?.map((recipeMealAffinities, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'mealAffinitiesDiv'+index}>
+                        <input
+                            key={'mealAffinitiesInput'+index}
+                            type='text'
+                            placeholder={recipeMealAffinities.name}
+                            name={recipeMealAffinities.name}
+                            value={recipeMealAffinities.name}
+                            className='form-control'
+                            onChange={handleRecipeMealAffinities}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeMealAffinity(recipeMealAffinities.name, e)}>Remove Affinity</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    function pairsWithDiv() {
+        // this functional component renders the ability to add multiple pairings and delete said pairings
+        return (
+            <>
+            <br/>
+            {(recipePairsWith)?.map((recipePairsWith, index) => {
+                return(
+                    
+                    <div className='form-group mb-2' key={'pairsWithDiv'+index}>
+                        <input
+                            key={'pairsWithInput'+index}
+                            type='text'
+                            placeholder={recipePairsWith.name}
+                            name={recipePairsWith.name}
+                            value={recipePairsWith.name}
+                            className='form-control'
+                            onChange={handleRecipePairsWith}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removePairsWith(recipePairsWith.name, e)}>Remove Pairing</button>
+                    </div>
+                )
+                })}
+            
+            </>
+        );
+    }
+
+    // function tagsDiv() {
+    //     // this functional component renders the ability to add multiple tags and delete said tags
+    //     return (
+    //         <>
+    //         <br/>
+    //         {(recipeTags)?.map((recipeTags, index) => {
+    //             return(
+                    
+    //                 <div className='form-group mb-2' key={'recipeTagsDiv'+index}>
+    //                     <input
+    //                         key={'recipeTagsInput'+index}
+    //                         type='text'
+    //                         placeholder={recipeTags[index]}
+    //                         name={recipeTags}
+    //                         value={recipeTags}
+    //                         className='form-control'
+    //                         onChange={handleRecipeTags}
+    //                     >
+    //                     </input>
+    //                     <button className='btn btn-danger btn-sm' onClick={(e) => removeTag(recipeTags, e)}>Remove Tag</button>
+    //                 </div>
+    //             )
+    //             })}
+    //         </>
+    //     )
+    // }
+
+    function tagsDiv() {
+        // this functional component renders the ability to add multiple tags and delete said tags
+        return (
+            <>
+            <br/>
+            {/* <button className='btn btn-success btn-sm' onClick={addTag}>Additional Tag</button> */}
+            {(recipeTags)?.map((tag, index) => {
+                return(
+                    <div className='form-group mb-2' key={'recipeTags' + index}>
+                        <input
+                            key={'tag'+index}
+                            type='text'
+                            placeholder= {tag}
+                            name={tag}
+                            value={tag}
+                            className='form-control'
+                            onChange={handleRecipeTags}
+                        >
+                        </input>
+                        <button className='btn btn-danger btn-sm' onClick={(e) => removeTag(tag, e)}>Remove Tag</button>
+                    </div>
+                )
+                })}
+            </>
+        )
+    }
+
+
 
 
 
@@ -1546,18 +2129,24 @@ const UpdateRecipeComponent = () => {
                             </div>
                             <div className="col">
                                 <div className="row"><br/></div>
-                                <div className="row">
+                                {/* <label className='form-label'>Recipe Prep Time:</label> */}
+                                {/* <div className="row form-group mb-2 form-floating"> */}
+                                <div className="row mb-2">
                                         {/* <div className="col recipeItal">prep time : </div>
                                         <div className="col">{recipe.prepTime && convertDuration(recipe.prepTime)}</div> */}
+                                        
                                         {prepTimeDiv()}
                                 </div>
+                                {/* <label className='form-label'>Recipe Active Time:</label> */}
                                 <div className="row">
-                                        <div className="col recipeItal">active time : </div>
-                                        <div className="col">{recipe.activeTime && convertDuration(recipe.activeTime)}</div>
+                                        {/* <div className="col recipeItal">active time : </div>
+                                        <div className="col">{recipe.activeTime && convertDuration(recipe.activeTime)}</div> */}
+                                        {activeTimeDiv()}
                                 </div>
                                 <div className="row">
-                                        <div className="col recipeItal">total time : </div>
-                                        <div className="col">{recipe.totalTime && convertDuration(recipe.totalTime)}</div>
+                                        {/* <div className="col recipeItal">total time : </div>
+                                        <div className="col">{recipe.totalTime && convertDuration(recipe.totalTime)}</div> */}
+                                        {totalTimeDiv()}
                                 </div>
                                 <div className="row"><br/></div>
                             </div>
@@ -1576,18 +2165,29 @@ const UpdateRecipeComponent = () => {
                         <div className="row border border-3 border-warning" key={'row4'}>
                             <div className="col ">
                                 <p className='recipeItal d-flex justify-content-center'>ingredients : </p>
-                                <div className='d-flex justify-content-center'>
-                                <ul>
+                                {/* <div className='d-flex justify-content-center'> */}
+                                {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end"><button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button></div> */}
+                                <button className='btn btn-success btn-sm' onClick={addIngredient}>Add Ingredient</button>
+
+
+                                <div className='d-flex'>
+                                {/* <ul>
                                     {recipe.ingredients && (parseIngredients(recipe?.ingredients).map(([ingKey, ingValue], index) => <li key={'ingredient'+index}>{ingValue} {ingKey}</li>))}
-                                </ul>
+                                </ul> */}
+                                {ingredientsDiv()}
                                 </div>
                             </div>
                             <div className="col">
                                 <p className='recipeItal d-flex justify-content-center'>equipment : </p>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addEquipment}>Additional Equipment</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                <ul>
+                                    
+                                {/* <ul>
                                     {recipe.equipment?.map((equip, index) => <li key={'equip' + index}>{equip.name}</li>)}
-                                </ul>
+                                </ul> */}
+                                    {equipmentDiv()}
                                 </div>
                             </div>
                         </div>
@@ -1597,9 +2197,10 @@ const UpdateRecipeComponent = () => {
                         <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row5'}>
                                 <div className='d-flex justify-content-center recipeItal'>Procedure :</div>
                                  
-                                <ol className=''>
+                                {/* <ol className=''>
                                     {recipe.method?.map((step, index) => <li className='d-flex justify-content-center' key={'step' + index}>{(index+1) +'. ' +step}</li>)}
-                                </ol>
+                                </ol> */}
+                                    {methodsDiv()}
                         </div>
     
                         {/* row 6 */}
@@ -1610,7 +2211,9 @@ const UpdateRecipeComponent = () => {
                             </div>
                             <div className="col-sm-4 border border -2 border-info ms-auto" key={'row6-col3'}>
                                 <div className='d-flex justify-content-center recipeItal'>from :</div>
-                                {recipe.author}, {recipe.origin}
+                                {/* {recipe.author}, {recipe.origin} */}
+                                {authorDiv()}
+                                {originDiv()}
                             </div>
                                 
                         </div>
@@ -1626,15 +2229,18 @@ const UpdateRecipeComponent = () => {
                         <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row8'}>
                             <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col1'}>
                                 <div className='d-flex justify-content-center recipeItal'>storage</div>
-                                <div className='d-flex justify-content-center'>{recipe.howToStore}</div>
+                                {/* <div className='d-flex justify-content-center'>{recipe.howToStore}</div> */}
+                                {storageDiv()}
                             </div>
                             <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col2'}>
                                 <div className='d-flex justify-content-center recipeItal'>reheat</div>
-                                <div className='d-flex justify-content-center'>{recipe.howToReheat}</div>
+                                {/* <div className='d-flex justify-content-center'>{recipe.howToReheat}</div> */}
+                                {reheatDiv()}
                             </div>
                             <div className="col-sm-4 border border -2 border-info ms-auto" key={'row8-col3'}>
                                 <div className='d-flex justify-content-center recipeItal'>freeze</div>
-                                <div className='d-flex justify-content-center'>{recipe.howToFreeze}</div>
+                                {/* <div className='d-flex justify-content-center'>{recipe.howToFreeze}</div> */}
+                                {freezeDiv()}
                             </div>
                                 
                         </div>
@@ -1644,17 +2250,25 @@ const UpdateRecipeComponent = () => {
                             <div className="col-sm-6 border border -2 border-info ms-auto" key={'row9-col1'}>
                                 <div className='d-flex justify-content-center recipeItal'>repurpose leftovers</div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    <button className='btn btn-success btn-sm' onClick={addIdea}>Additional Idea</button>
+                                </div>
+                                <div className='d-flex justify-content-center'>
+                                    {/* <ul>
                                         {recipe.howToUseRepurposeLeftoversIdeas?.map((idea, index) => <li key={'repurposeIdea' + index}>{idea}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {useLeftoversIdeasDiv()}
                                 </div>
                             </div>
                             <div className="col-sm-6 border border -2 border-info ms-auto" key={'row9-col2'}>
                                 <div className='d-flex justify-content-center recipeItal'>leftover ingredients</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addDishLeftoverIngredients}>Additional Dish</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    {/* <ul>
                                         {recipe.dishesThatAlsoUseLeftoverIngredients?.map((dish, index) => <li key={'leftoverDish' + index}>{dish.name}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {leftoverIngredientsDiv()}
                                 </div>
                             </div>
                                 
@@ -1664,34 +2278,50 @@ const UpdateRecipeComponent = () => {
                         <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row10'}>
                             <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col1'}>
                                 <div className='d-flex justify-content-center recipeItal'>often made alongside</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addOftenMadeAlongside}>Additional Recipe made alongside</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    {/* <ul>
                                         {recipe.oftenMadeAlongside?.map((dish, index) => <li key={'oftenAlongside' + index}>{dish.name}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {oftenMadeAlongsideDiv()}
                                 </div>
                             </div>
                             <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col2'}>
                                 <div className='d-flex justify-content-center recipeItal'>pairings</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addPairing}>Additional Pairing</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    {/* <ul>
                                         {recipe.pairings?.map((dish, index) => <li key={'pairings' + index}>{dish.name}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {pairingsDiv()}
                                 </div>
                             </div>
                             <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col3'}>
                                 <div className='d-flex justify-content-center recipeItal'>meal affinities</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addMealAffinity}>Additional Affinity</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    {/* <ul>
                                         {recipe.mealAffinities?.map((affinity, index) => <li key={'affinity' + index}>{affinity.name}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {mealAffinitiesDiv()}
                                 </div>
                             </div>
                             <div className="col-sm-3 border border -2 border-info ms-auto" key={'row10-col4'}>
                                 <div className='d-flex justify-content-center recipeItal'>pairs with</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addPairsWith}>Additional Pairing</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    <ul>
+                                    {/* <ul>
                                         {recipe.pairsWith?.map((dish, index) => <li key={'pairsWith' + index}>{dish.name}</li>)}
-                                    </ul>
+                                    </ul> */}
+                                    {pairsWithDiv()}
                                 </div>
                             </div>
                                 
@@ -1748,8 +2378,12 @@ const UpdateRecipeComponent = () => {
                         {/* row 12 */}
                         <div className="row border border-3 border-warning ms-auto d-flex justify-content-center" key={'row12'}>
                                 <div className='d-flex justify-content-center recipeItal'>Tags :</div>
+                                <div className="d-flex justify-content-center">
+                                    <button className='btn btn-success btn-sm' onClick={addTag}>Additional Tag</button>
+                                </div>
                                 <div className='d-flex justify-content-center'>
-                                    {recipe.tags?.map((tag, index) => '#'+ tag + (((index+1) < recipe.tags.length) ? ' | ' : ''))}
+                                    {/* {recipe.tags?.map((tag, index) => '#'+ tag + (((index+1) < recipe.tags.length) ? ' | ' : ''))} */}
+                                    {tagsDiv()}
                                 </div>
                                 
                         </div>
@@ -1852,8 +2486,118 @@ const UpdateRecipeComponent = () => {
         return duration;
     }
 
+    //  totalTime=PT28H30M
+    // function splitSetDuration(t) {
     function splitSetDuration(t) {
+        console.log("in splitSetDuration()")
+        // var t = "PT28H30M"
+        // var t = "PT2M"
+        // var t = "PT0S"
         // work on this tomorrow.. start here!
+
+        var timeArray = t.split('T')
+        var contains = [];
+        console.log("timeArray after split('T') on array param = ->")
+        console.log(timeArray)
+        var time = timeArray[1]
+        if (time.includes('H')) {
+            console.log("contains H is true")
+            contains.push('H')
+        }
+        if (time.includes('M')) {
+            console.log("contains M is true")
+            contains.push('M')
+        }
+        if (time.includes('S')) {
+            console.log("contains S is true")
+            contains.push('S')
+        }
+        var nextSplit;
+        console.log('contains = -> ')
+        console.log(contains)
+        if (contains.includes('H')) {
+            nextSplit = timeArray[1].split('H')
+            console.log("after split on H, nextSplit = ->")
+            console.log(nextSplit)
+        
+            var hours = nextSplit[0]
+            nextSplit.shift()
+
+            console.log("after splitting hours, hours = ->")
+            console.log(hours)
+            // find days from hours
+            if(hours.valueOf() >= 24) {
+                console.log("starting 24 hour day statement")
+                var days = hours.valueOf()/24;
+                days = days.toFixed(0)
+                hours = hours - (days * 24)
+            }
+            console.log("after shift, nextSplit = ->")
+            console.log(nextSplit)
+        }
+        
+        if (contains.includes('M')) {
+            console.log("includes 'M', starting conditional ")
+            console.log("currently timeArray = ->")
+            console.log(timeArray)
+            console.log("currently nextSplit = ->")
+            console.log(nextSplit)
+            if (!nextSplit) {
+                console.log("inside !nextSplit false conditional")
+                console.log("nextSplit is = ->")
+                console.log(nextSplit)
+                nextSplit = timeArray[1].split('M')
+                var minutes = nextSplit[0]
+
+            } else {
+                console.log("inside nextSplit true conditional")
+                var minutes = nextSplit[0].replace('M', '')
+            }
+            console.log("after splitting on M")
+            console.log("nextSplit is = ->")
+            console.log(nextSplit)
+            console.log("nextSplit is currently = ->")
+            console.log(nextSplit)
+            nextSplit.shift()
+            console.log("after shift, nextSplit = ->")
+            console.log(nextSplit)
+        }
+        if (contains.includes('S')) {
+            console.log("includes 'S', starting conditional ")
+            console.log("currently timeArray = ->")
+            console.log(timeArray)
+            console.log("currently nextSplit = ->")
+            console.log(nextSplit)
+            if (!nextSplit) {
+                console.log("inside !nextSplit false conditional")
+                console.log("nextSplit is = ->")
+                console.log(nextSplit)
+                nextSplit = timeArray[1].split('S')
+                var seconds = nextSplit[0]
+
+            } else {
+                console.log("inside nextSplit true conditional")
+                var seconds = nextSplit[0].replace('S', '')
+            }
+        }
+        console.log("at the end of the function ::: values are ::  days = " + days + ", hours = " + hours + ", minutes = " + minutes + ", seconds = " + seconds)
+        if (!days) {days = 0}
+        if (!hours) {hours = 0}
+        if (!minutes) {minutes = 0}
+        if (!seconds) {seconds = 0}
+        days = Number.parseInt(days)
+        hours = Number.parseInt(hours)
+        minutes = Number.parseInt(minutes)
+        seconds = Number.parseInt(seconds)
+        var timeMap = {
+            'days' : days,
+            'hours' : hours,
+            'minutes' : minutes,
+            'seconds' : seconds
+        }
+        console.log("end of method... will be returning, timeMap = ->")
+        console.log(timeMap)
+        return timeMap;
     }
     
 }

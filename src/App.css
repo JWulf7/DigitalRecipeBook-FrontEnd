@@ -78,3 +78,10 @@
 .updateButton {
     width: 25px;
 }
+
+/* .form-floating > label {
+    position:absolute;
+    justify-self: flex-end;
+    justify-content: flex-end;
+    justify-items: flex-end;
+} */

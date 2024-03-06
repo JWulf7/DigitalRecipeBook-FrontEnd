@@ -14,6 +14,7 @@ const RecipeComponent = () => {
     useEffect(() => {
         getRecipe(name).then((Response) => {
             setRecipe(Response.data);
+            console.log("inside useEffect(), after setRecipe(Response.data) :: recipe = -->")
             console.log(recipe)
             console.log("Response.data -> " + String(Response.data) + " : end of response data")
         }).catch(error => {
