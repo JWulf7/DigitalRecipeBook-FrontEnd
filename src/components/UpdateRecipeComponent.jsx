@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createRecipe, getRecipe } from '../services/RecipeService'
+import { createRecipe, getRecipe, updateRecipe } from '../services/RecipeService'
 import { useNavigate, useParams } from 'react-router-dom'
 import Collapsible from 'react-collapsible'
 
@@ -8,7 +8,7 @@ const UpdateRecipeComponent = () => {
     const { name } = useParams()
 
     
-
+    // initial recipe before any edits
     const [recipe, setRecipe] = useState([])
 
     useEffect(() => {
@@ -26,22 +26,56 @@ const UpdateRecipeComponent = () => {
 
 
     function parseIngredients(obj) {
+        console.log("in parseIngredients(obj) :: obj = ->")
+        console.log(obj)
         var newObj = {};
         Object.keys(obj).forEach(key => {
         newObj[key] = obj[key]
         })
-    
+        console.log("new obj = ->")
         console.log(newObj);
         console.log(Object.entries(newObj));
         return Object.entries(newObj);
       }
+
+    function parseIngredientsTwo(obj) {
+        console.log("in parseIngredientsTwo(obj) :: obj = ->")
+        console.log(obj)
+        var newObj = {};
+        var newArray = [];
+        Object.keys(obj).forEach(key => {
+            let newIngredient = {
+                ingredientName : '',
+                ingredientQty : ''
+        
+            }
+            console.log("key = ->")
+            console.log(key)
+            newIngredient.ingredientName = key;
+            newIngredient.ingredientQty = obj[key];
+            console.log("new ingredient = >")
+            console.log(newIngredient)
+            newArray.push(newIngredient)
+            })
+        console.log("newArray = ->")
+        console.log(newArray)
+        return newArray;
+
+    }
 
     function setWholeRecipe(recipe) {
         // set all state variables w/ incoming recipe data
         console.log("starting setWholeRecipe() function")
         {(recipe && setRecipeName(recipe.name)); 
             setRecipeDescription(recipe.description);
-            setRecipeIngredients([...parseIngredients(recipe.ingredients)]);
+            console.log("about to setRecipeIngredients :: recipe.ingredients = ->")
+            console.log(recipe.ingredients)
+            setRecipeIngredients([...parseIngredientsTwo(recipe.ingredients)]);
+            // setRecipeIngredients([...recipe.ingredients]);
+            console.log("parse recipeIngredientsOutput = ->")
+            console.log(parseIngredientsTwo(recipe.ingredients))
+            console.log("after  setRecipeIngredients :: recipeIngredients = ->")
+            console.log(recipeIngredients)
             setRecipeMethods([...recipe.method]);
             setRecipeServings(recipe.servings);
             console.log("in setWholeRecipe(), about to hit splitSetDuration()")
@@ -67,7 +101,7 @@ const UpdateRecipeComponent = () => {
             setRecipeAuthor(recipe.author)
             setRecipeFoodOrDrink(recipe.foodOrDrink)
             setRecipePictures([...recipe.pictures])
-            setrecipeOftenMadeAlongside([recipe.oftenMadeAlongside])
+            setrecipeOftenMadeAlongside([...recipe.oftenMadeAlongside])
             setRecipeSeasonality(recipe.seasonality)
             setRecipeTags([...recipe.tags])
             setRecipePairsWith([...recipe.pairsWith])
@@ -905,19 +939,35 @@ const UpdateRecipeComponent = () => {
 
 
     function convertIngredientsForSerialization(ingredients) {
+        console.log("inside convertIngredientsForSerialization")
         let sendIngredients = {};
+        console.log("ingredients parameter = ->")
+        console.log(ingredients)
         ingredients.map((ingredients) => {
+            console.log("iterating through ingredients...")
+            console.log("current 'ingredients' = ->")
+            console.log(ingredients)
+            console.log("ingredients.ingredientName = ->")
+            console.log(ingredients.ingredientName)
+            console.log("ingredients.ingredientQty = ->")
+            console.log(ingredients.ingredientQty)
+            console.log("setting/adding previous k/v pair to sendIngredients")
         sendIngredients[ingredients.ingredientName] = ingredients.ingredientQty;
+            console.log("sendIngredients is now =>")
+            console.log(sendIngredients)
          } )
+         console.log("sendIngredients = ->")
+         console.log(sendIngredients)
          return sendIngredients;
     }
 
 
-    function convertDTOSchema(recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+    function convertDTOSchema(recipeId,recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
         recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
         recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
         recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
         recipeMealAffinities) {
+        // let id = recipeId;
         let name = recipeName;
         let description = recipeDescription;
         let version = 0;
@@ -954,6 +1004,7 @@ const UpdateRecipeComponent = () => {
         let allDatesCooked = [''];
         let allDatesUpdated = [''];
 
+        // const recipeDTO = {id, name, description, version, ingredients, method, servings, prepTime, activeTime, totalTime, equipment, pairings, notes, rating, author, foodOrDrink, pictures,
         const recipeDTO = {name, description, version, ingredients, method, servings, prepTime, activeTime, totalTime, equipment, pairings, notes, rating, author, foodOrDrink, pictures,
                             oftenMadeAlongside, seasonality, tags, pairsWith, notesInPlaceCollapse, origin, easeLevel, meal, category, howToStore, howToReheat, howToFreeze,
                             howToUseRepurposeLeftoversIdeas, dishesThatAlsoUseLeftoverIngredients, mealAffinities, lastCooked, created, allDatesCooked, allDatesUpdated}
@@ -962,6 +1013,43 @@ const UpdateRecipeComponent = () => {
     }
 
 
+    function submitRecipeUpdate(e) {
+        console.log('Inside submitRecipeUpdate() function')
+        console.log('recipe.id = ->')
+        console.log(recipe.id)
+        e.preventDefault();
+        // validate form
+        if(validateForm()){
+
+                // handle durations
+            let recipePrepTimeTotal = handleRecipePrepTimeTotal();
+            let recipeActiveTimeTotal = handleRecipeActiveTimeTotal();
+            let recipeTotalTimeTotal = handleRecipeTotalTime()
+
+            // handle ingredient serialization
+            console.log(" before convertIngredientsForSerialization :: recipeIngredients = ->")
+            console.log(recipeIngredients)
+            let ingredientObject = convertIngredientsForSerialization(recipeIngredients);
+            console.log(" after convertIngredientsForSerialization :: ingredientObject = ->")
+            console.log(ingredientObject)
+
+            // convert naming to DTO schema
+            const recipeDTO = convertDTOSchema(recipe.id, recipeName, recipeDescription, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+                recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
+                recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
+                recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
+                recipeMealAffinities)
+
+            console.log("before submit update... recipeDTO = ->")
+            console.log(recipeDTO)
+            console.log("before submit update... end recipeDTO")
+
+            updateRecipe(recipeDTO).then((response) => {
+                console.log(response.data);
+                goBack(recipe.name);
+            })
+        }
+    }
 
 
     function saveRecipe(e) {
@@ -998,8 +1086,6 @@ const UpdateRecipeComponent = () => {
                 // navigator('/recipes')
             })
         }
-
-        
     }
 
     // Form Validation Function
@@ -2005,7 +2091,8 @@ const UpdateRecipeComponent = () => {
                 {/* <h1>{"Hello " + name}</h1> */}
                 <div className="col g-1"/>
                     <div className="container">
-                        <button className='btn btn-success mb-2' onClick={() => updateRecipe(recipe.name)}>Submit Update</button>
+                        {/* <button className='btn btn-success mb-2' onClick={() => submitRecipeUpdate(recipeName)}>Submit Update</button> */}
+                        <button className='btn btn-success mb-2' onClick={(e) => submitRecipeUpdate(e)}>Submit Update</button>
                         <button className='btn btn-danger mb-2' onClick={() => goBack(recipe.name)}>Cancel</button>
                     </div>
                     <div className="container">
@@ -2407,16 +2494,16 @@ const UpdateRecipeComponent = () => {
 
 
 
-    function parseIngredients(obj) {
-        var newObj = {};
-        Object.keys(obj).forEach(key => {
-        newObj[key] = obj[key]
-        })
+    // function parseIngredients(obj) {
+    //     var newObj = {};
+    //     Object.keys(obj).forEach(key => {
+    //     newObj[key] = obj[key]
+    //     })
     
-        console.log(newObj);
-        console.log(Object.entries(newObj));
-        return Object.entries(newObj);
-      }
+    //     console.log(newObj);
+    //     console.log(Object.entries(newObj));
+    //     return Object.entries(newObj);
+    //   }
     
     
     function convertDuration(t){ 
