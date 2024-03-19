@@ -913,6 +913,8 @@ const CreateRecipeComponent = () => {
             createRecipe(recipeDTO).then((response) => {
                 console.log(response.data);
                 navigator('/recipes')
+            }).catch(error => {
+                console.error(error);
             })
         }
 

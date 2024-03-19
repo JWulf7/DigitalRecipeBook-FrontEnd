@@ -1049,6 +1049,8 @@ const UpdateRecipeComponent = () => {
             updateRecipe(recipeDTO).then((response) => {
                 console.log(response.data);
                 goBack(recipe.name);
+            }).catch(error => {
+                console.error(error);
             })
         }
     }
