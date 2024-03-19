@@ -8,6 +8,8 @@ const ListRecipeComponent = () => {
 
     const [recipes, setRecipes] = useState([])
 
+    const [searchInput, setSearchInput] = useState("")
+
     const navigator = useNavigate();
 
     useEffect(() => {
@@ -20,7 +22,7 @@ const ListRecipeComponent = () => {
 
     }, [])
 
-    
+
 /*
     const dummyData = [
         {
@@ -221,7 +223,10 @@ const ListRecipeComponent = () => {
                 <div className="col col-sm">
                     <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
                 </div>
-                <div className="col"><br/></div>
+                <div className="col searchInputs">
+                    <input type="text" id="myInput" onChange={searchTable} placeholder="Keyword Search..." value={searchInput}/>
+                    <br/>
+                </div>
                     
                 <div className="col"><br/></div>
             
@@ -230,48 +235,49 @@ const ListRecipeComponent = () => {
                 </div>
             </div>
         </div>
-        <table className='table table-striped table-bordered' height='100%'>
+        <table className='table table-striped table-bordered' height='100%' id='resulttable'>
+        
             <thead>
                 <tr>
-                    <th>Recipe ID</th>
-                    <th>Recipe Name</th>
-                    <th>Description</th>
-                    <th>Version</th>
-                    <th>Ingredients</th>
-                    <th>Method</th>
-                    <th>Servings</th>
-                    <th>Prep Time</th>
-                    <th>Active Time</th>
-                    <th>Total Time</th>
-                    <th>Equipment</th>
-                    <th>Pairings</th>
-                    <th>Notes</th>
-                    <th>Rating</th>
-                    <th>Author</th>
-                    <th>Food or Drink</th>
-                    <th>Pictures</th>
-                    <th>Often made alongside</th>
-                    <th>Seasonality</th>
-                    <th>Tags</th>
-                    <th>Pairs with</th>
-                    <th>Notes in place collapse</th>
-                    <th>Origin</th>
-                    <th>Ease Level</th>
-                    <th>Meal</th>
-                    <th>Category</th>
-                    <th>How to Store</th>
-                    <th>How to Reheat</th>
-                    <th>How to Freeze</th>
-                    <th>How to use/repurpose Leftovers Ideas</th>
-                    <th>Dishes that also use Leftover Ingredients</th>
-                    <th>Meal Affinities</th>
-                    <th>Last Cooked</th>
-                    <th>Created</th>
-                    <th>All Dates Cooked</th>
-                    <th>All Dates Updated</th>
+                    <th onClick={() => sortTable(0)}>Recipe ID</th>
+                    <th onClick={() => sortTable(1)}>Recipe Name</th>
+                    <th onClick={() => sortTable(2)}>Description</th>
+                    <th onClick={() => sortTable(3)}>Version</th>
+                    <th onClick={() => sortTable(4)}>Ingredients</th>
+                    <th onClick={() => sortTable(5)}>Method</th>
+                    <th onClick={() => sortTable(6)}>Servings</th>
+                    <th onClick={() => sortTable(7)}>Prep Time</th>
+                    <th onClick={() => sortTable(8)}>Active Time</th>
+                    <th onClick={() => sortTable(9)}>Total Time</th>
+                    <th onClick={() => sortTable(10)}>Equipment</th>
+                    <th onClick={() => sortTable(11)}>Pairings</th>
+                    <th onClick={() => sortTable(12)}>Notes</th>
+                    <th onClick={() => sortTable(13)}>Rating</th>
+                    <th onClick={() => sortTable(14)}>Author</th>
+                    <th onClick={() => sortTable(15)}>Food or Drink</th>
+                    <th onClick={() => sortTable(16)}>Pictures</th>
+                    <th onClick={() => sortTable(17)}>Often made alongside</th>
+                    <th onClick={() => sortTable(18)}>Seasonality</th>
+                    <th onClick={() => sortTable(19)}>Tags</th>
+                    <th onClick={() => sortTable(20)}>Pairs with</th>
+                    <th onClick={() => sortTable(21)}>Notes in place collapse</th>
+                    <th onClick={() => sortTable(22)}>Origin</th>
+                    <th onClick={() => sortTable(23)}>Ease Level</th>
+                    <th onClick={() => sortTable(24)}>Meal</th>
+                    <th onClick={() => sortTable(25)}>Category</th>
+                    <th onClick={() => sortTable(26)}>How to Store</th>
+                    <th onClick={() => sortTable(27)}>How to Reheat</th>
+                    <th onClick={() => sortTable(28)}>How to Freeze</th>
+                    <th onClick={() => sortTable(29)}>How to use/repurpose Leftovers Ideas</th>
+                    <th onClick={() => sortTable(30)}>Dishes that also use Leftover Ingredients</th>
+                    <th onClick={() => sortTable(31)}>Meal Affinities</th>
+                    <th onClick={() => sortTable(32)}>Last Cooked</th>
+                    <th onClick={() => sortTable(33)}>Created</th>
+                    <th onClick={() => sortTable(34)}>All Dates Cooked</th>
+                    <th onClick={() => sortTable(35)}>All Dates Updated</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="resultsbody">
                 {
                 /*    dummyData.map(recipe =>   */
                     recipes.map(recipe =>    
@@ -332,72 +338,156 @@ const ListRecipeComponent = () => {
   }
 
 
-  function convertDuration(t){ 
-    //dividing period from time
-    var x = t.split('T'),
-        duration = '',
-        time = {},
-        period = {},
-        //just shortcuts
-        s = 'string',
-        v = 'variables',
-        l = 'letters',
-        // store the information about ISO8601 duration format and the divided strings
-        d = {
-            period: {
-                string: x[0].substring(1,x[0].length),
-                len: 4,
-                // years, months, weeks, days
-                letters: ['Y', 'M', 'W', 'D'],
-                variables: {}
-            },
-            time: {
-                string: x[1],
-                len: 3,
-                // hours, minutes, seconds
-                letters: ['H', 'M', 'S'],
-                variables: {}
+    function convertDuration(t){ 
+        //dividing period from time
+        var x = t.split('T'),
+            duration = '',
+            time = {},
+            period = {},
+            //just shortcuts
+            s = 'string',
+            v = 'variables',
+            l = 'letters',
+            // store the information about ISO8601 duration format and the divided strings
+            d = {
+                period: {
+                    string: x[0].substring(1,x[0].length),
+                    len: 4,
+                    // years, months, weeks, days
+                    letters: ['Y', 'M', 'W', 'D'],
+                    variables: {}
+                },
+                time: {
+                    string: x[1],
+                    len: 3,
+                    // hours, minutes, seconds
+                    letters: ['H', 'M', 'S'],
+                    variables: {}
+                }
+            };
+        //in case the duration is a multiple of one day
+        if (!d.time.string) {
+            d.time.string = '';
+        }
+
+        for (var i in d) {
+            var len = d[i].len;
+            for (var j = 0; j < len; j++) {
+                d[i][s] = d[i][s].split(d[i][l][j]);
+                if (d[i][s].length>1) {
+                    d[i][v][d[i][l][j]] = parseInt(d[i][s][0], 10);
+                    d[i][s] = d[i][s][1];
+                } else {
+                    d[i][v][d[i][l][j]] = 0;
+                    d[i][s] = d[i][s][0];
+                }
             }
-        };
-    //in case the duration is a multiple of one day
-    if (!d.time.string) {
-        d.time.string = '';
+        } 
+        period = d.period.variables;
+        time = d.time.variables;
+        time.H +=   24 * period.D + 
+                                24 * 7 * period.W +
+                                24 * 7 * 4 * period.M + 
+                                24 * 7 * 4 * 12 * period.Y;
+
+        if (time.H) {
+            duration = time.H + ':';
+            if (time.M < 10) {
+                time.M = '0' + time.M;
+            }
+        }
+
+        if (time.S < 10) {
+            time.S = '0' + time.S;
+        }
+
+        duration += time.M + ':' + time.S;
+        return duration;
     }
 
-    for (var i in d) {
-        var len = d[i].len;
-        for (var j = 0; j < len; j++) {
-            d[i][s] = d[i][s].split(d[i][l][j]);
-            if (d[i][s].length>1) {
-                d[i][v][d[i][l][j]] = parseInt(d[i][s][0], 10);
-                d[i][s] = d[i][s][1];
+    function searchTable(eventObject) {
+        setSearchInput(eventObject.target.value)
+        console.log("inside searchTable function")
+        var filter, found, table, tr, td, i, j;
+
+        filter = eventObject?.target.value.toUpperCase();
+
+        table = document.getElementById("resultsbody");
+        tr = table?.getElementsByTagName("tr");
+        for (i = 0; i < tr?.length; i++) {
+            td = tr[i]?.getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                }
+            }
+            if (found) {
+                tr[i].style.display = "";
+                found = false;
             } else {
-                d[i][v][d[i][l][j]] = 0;
-                d[i][s] = d[i][s][0];
+                tr[i].style.display = "none";
             }
         }
-    } 
-    period = d.period.variables;
-    time = d.time.variables;
-    time.H +=   24 * period.D + 
-                            24 * 7 * period.W +
-                            24 * 7 * 4 * period.M + 
-                            24 * 7 * 4 * 12 * period.Y;
+    }
 
-    if (time.H) {
-        duration = time.H + ':';
-        if (time.M < 10) {
-            time.M = '0' + time.M;
+
+
+    function sortTable(n) {
+        console.log("inside sortTable function")
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("resulttable");
+        switching = true;
+        // Set the sorting direction to ascending:
+        dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+          // Start by saying: no switching is done:
+          switching = false;
+          rows = table?.rows;
+          /* Loop through all table rows (except the
+          first, which contains table headers): */
+          for (i = 1; i < (rows?.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("td")[n];
+            y = rows[i + 1].getElementsByTagName("td")[n];
+            /* Check if the two rows should switch place,
+            based on the direction, asc or desc: */
+            if (dir == "asc") {												
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+              }
+            } else if (dir == "desc") {
+              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+              }
+            }
+          }
+          if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            // Each time a switch is done, increase this count by 1:
+            switchcount ++;
+          } else {
+            /* If no switching has been done AND the direction is "asc",
+            set the direction to "desc" and run the while loop again. */
+            if (switchcount == 0 && dir == "asc") {
+              dir = "desc";
+              switching = true;
+            }
+          }
         }
-    }
+      }
 
-    if (time.S < 10) {
-        time.S = '0' + time.S;
-    }
-
-    duration += time.M + ':' + time.S;
-    return duration;
-}
 
 }
 
