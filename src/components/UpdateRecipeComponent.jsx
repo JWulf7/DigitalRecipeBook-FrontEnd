@@ -115,6 +115,7 @@ const UpdateRecipeComponent = () => {
             setRecipeHowToUseRepurposeLeftoversIdeas([...recipe.howToUseRepurposeLeftoversIdeas])
             setRecipeDishesThatAlsoUseLeftoverIngredients([...recipe.dishesThatAlsoUseLeftoverIngredients])
             setRecipeMealAffinities([...recipe.mealAffinities])
+            setRecipeVersion(recipe.version)
         }
             
         
@@ -140,6 +141,7 @@ const UpdateRecipeComponent = () => {
     const [methodsIndex, setMethodsIndex] = useState(0)
 
     const [recipeServings, setRecipeServings] = useState(recipe.servings)
+    const [recipeVersion, setRecipeVersion] = useState(recipe.version)
     // prep time
     // const [recipePrepTimeTotal, setRecipePrepTimeTotal] = useState('') // might need to make this recipePrepTimeTotal... and add subvalues... ???
     const [recipePrepTimeDays, setRecipePrepTimeDays] = useState('')
@@ -962,7 +964,7 @@ const UpdateRecipeComponent = () => {
     }
 
 
-    function convertDTOSchema(recipeId,recipeName, recipeDescription, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+    function convertDTOSchema(recipeId,recipeName, recipeDescription, recipeVersion, recipeIngredients, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
         recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
         recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
         recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
@@ -970,7 +972,7 @@ const UpdateRecipeComponent = () => {
         // let id = recipeId;
         let name = recipeName;
         let description = recipeDescription;
-        let version = 0;
+        let version = recipeVersion;
         let ingredients = recipeIngredients;
         let method = recipeMethods;
         let servings = recipeServings;
@@ -1034,7 +1036,7 @@ const UpdateRecipeComponent = () => {
             console.log(ingredientObject)
 
             // convert naming to DTO schema
-            const recipeDTO = convertDTOSchema(recipe.id, recipeName, recipeDescription, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
+            const recipeDTO = convertDTOSchema(recipe.id, recipeName, recipeDescription, recipeVersion, ingredientObject, recipeMethods, recipeServings, recipePrepTimeTotal, recipeActiveTimeTotal, 
                 recipeTotalTimeTotal, recipeEquipment, recipePairings, recipeNotes, recipeRating, recipeAuthor, recipeFoodOrDrink, recipePictures,
                 recipeOftenMadeAlongside, recipeSeasonality, recipeTags, recipePairsWith, recipeOrigin, recipeEaseLevel, recipeMeal, recipeCategory,
                 recipeHowToStore, recipeHowToReheat, recipeHowToFreeze, recipeHowToUseRepurposeLeftoversIdeas, recipeDishesThatAlsoUseLeftoverIngredients,
