@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { listRecipes } from '../services/RecipeService'
 import { Link, useNavigate } from 'react-router-dom'
 import RecipeNameSearchBar from './RecipeNameSearchBar'
+import "bootstrap/js/src/collapse.js";
 
 
 const RecipeBookTableofContentsComponent = () => {
@@ -12,9 +13,15 @@ const RecipeBookTableofContentsComponent = () => {
 
     const navigator = useNavigate();
 
+    const [categories, setCategories] = useState<string[]>(["Beef", "Bread", "Quickbread", "Yeast Bread", "Butter", "Chicken",
+                                                            "Condiment", "Dessert", "Dips & Spreads", "Egg", "Other", "Pickle", "Pork", "Salad", "Sandwiches", "Seafood",
+                                                            "Shellfish", "Scallops", "Shrimp", "Soups", "Starches", "Beans", "Grits", "Pasta", "Potatoes", "Rice", "Vegetables",
+                                                            ])
+
     useEffect(() => {
         listRecipes().then((Response) => {
             setRecipes(Response.data);
+            // (recipes && composeCategories())
             // console.log("useEffect console.log of recipes -> " +recipes)
         }).catch(error => {
             console.error(error);
@@ -74,6 +81,43 @@ const RecipeBookTableofContentsComponent = () => {
         ingValue: string;
     }
 
+    // this function checks to see if there are any additional categories from the DB and adds them to the initial/starter Categories
+    function composeCategories() {
+        console.log("inside compose Categories ")
+        let additionalCategories : string[] = [];
+        recipes.map((eachRecipe, index) => {
+            console.log("iterating through each recipe in composeCategories...")
+            console.log("eachRecipe = ->")
+            console.log(eachRecipe)
+            eachRecipe.category.map(category => {
+                console.log("iterating through composeCategories")
+                console.log("eachRecipe = ->")
+                console.log(eachRecipe)
+                console.log("category = ->")
+                console.log(category)
+                if(!categories.includes(category)) {
+                    additionalCategories.push(category)
+                }
+            })
+        })
+        console.log("additional categories = ->")
+        console.log(additionalCategories)
+        console.log("length is ")
+        console.log(additionalCategories.length)
+        if(additionalCategories.length > 0) {
+            let initialCategories = categories;
+            console.log("initial categories = ->")
+            console.log(initialCategories)
+            console.log("additional categories = ->")
+            console.log(additionalCategories)
+            // let combinedCategories : string[] = (initialCategories.concat(...additionalCategories)).sort();
+            let combinedCategories : string[] = (initialCategories.concat(...additionalCategories));
+            console.log("combined categories = ->")
+            console.log(combinedCategories)
+            setCategories([...combinedCategories])
+        }
+    }
+
 
     function addNewRecipe() {
         navigator('/add-recipe')
@@ -83,10 +127,109 @@ const RecipeBookTableofContentsComponent = () => {
         navigator('/recipe/:'+name)
     }
 
+
+
+    function categoryLinks(category : string) {
+        // this functional component renders the ability to add multiple recipe links under each category
+        console.log("inside category links function");
+        console.log("category = ->");
+        console.log(category);
+        return (
+            <>
+
+            {(recipes).map((eachRecipe, index) => {
+                console.log("iterating through eachRecipe; eachRecipe = ->");
+                console.log(eachRecipe);
+                if (eachRecipe.category.includes(category)) {
+                    console.log("includes was true....")
+                    console.log("should be returning a div here for " + eachRecipe.name + "in " + category)
+                    return(
+                        
+                        <>
+                        {console.log("should be returning a div here for " + eachRecipe.name + "in " + category)}
+                        {/* // <div className='form-group mb-2' key={category.concat(index.toString())}> */}
+                        <div key={category.concat(index.toString()).concat(eachRecipe.name)}>
+                            <Link to={"/recipe/"+eachRecipe?.name}>{eachRecipe.name}</Link>
+                        </div>
+                        </>
+                    )
+                }
+
+                })}
+            
+            </>
+        );
+    }
+
+    function renderCategories() {
+        composeCategories();
+        console.log("inside renderCategories() function");
+        console.log("categoreies = ->");
+        console.log(categories);
+        return (
+            <>
+            
+                {(categories).map((eachCategory, index) => {
+                    console.log("iterating through eachCategory; eachCategory = ->"); 
+                    console.log(eachCategory);
+                    return(
+                    
+                        <div className='row container' key={(eachCategory).concat("RenderCategoryDiv")}>
+                            {/* <a className="row medText" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> */}
+                            <a className="row medText" data-bs-toggle="collapse" href={("#collapse").concat(eachCategory)} role="button" aria-expanded="false" aria-controls={("collapse").concat(eachCategory)}>
+                                {/* Bread */}
+                                {eachCategory}
+                            </a>
+                            {/* <div className="collapse" id="collapseExample"> */}
+                            <div className="collapse" id={("collapse").concat(eachCategory)}>
+                                {/* {categoryLinks("Bread")} */}
+                                {categoryLinks(eachCategory)}
+                            </div>
+                        </div>
+                    )
+
+                })}
+
+            </>
+        )
+
+    }
+
+
+            // {(recipeMealAffinities).map((recipeMealAffinities, index) => {
+            //     return(
+                    
+            //         <div className='form-group mb-2' key={'mealAffinitiesDiv'+index}>
+            //             <input
+            //                 key={'mealAffinitiesInput'+index}
+            //                 type='text'
+            //                 placeholder='Enter a recipe name'
+            //                 name={recipeMealAffinities.name}
+            //                 value={recipeMealAffinities.name}
+            //                 className='form-control'
+            //                 onChange={handleRecipeMealAffinities}
+            //                 // autoFocus='autoFocus'
+                            
+            //             >
+            //             </input>
+            //             <button className='btn btn-danger btn-sm' onClick={(e) => removeMealAffinity(recipeMealAffinities.name, e)}>Remove Affinity</button>
+            //         </div>
+            //     )
+            //     })}
+              
+    //         </>
+    //     );
+    // }
+
+
+
+
+
   return (
     <div className='container'>
 
-        <h2 className='text-center'>List of Recipes</h2>
+        <h2 className='text-center'>Digital RecipeBook</h2>
+        <h2 className='text-center'>Table of Contents</h2>
         <div>
             <div className="row">
                 <div className="col col-sm">
@@ -104,7 +247,26 @@ const RecipeBookTableofContentsComponent = () => {
                 </div>
             </div>
         </div>
-        <table className='table table-striped table-bordered' data-height='100%' id='resulttable'>
+
+
+
+
+
+        {/* <div className='row container'>
+            <a className="row medText" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Bread
+            </a>
+            <div className="collapse" id="collapseExample">
+                {categoryLinks("Bread")}
+            </div>
+        </div> */}
+        {renderCategories()}
+
+
+
+
+
+        {/* <table className='table table-striped table-bordered' data-height='100%' id='resulttable'>
         
             <thead>
                 <tr>
@@ -148,7 +310,6 @@ const RecipeBookTableofContentsComponent = () => {
             </thead>
             <tbody id="resultsbody">
                 {
-                /*    dummyData.map(recipe =>   */
                     recipes.map(recipe =>    
                         <tr key={recipe.id}>
                             <td>{recipe.id}</td>
@@ -156,7 +317,6 @@ const RecipeBookTableofContentsComponent = () => {
                             <td>{recipe.description}</td>
                             <td>{recipe.version}</td>
                             <td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) => <li>{ingValue} {ingKey}</li>)}</ul></td>
-                            {/* <td><ul>{parseIngredients(recipe.ingredients).map(([ingKey, ingValue]) : React.ReactNode => <li>{ingValue} {ingKey}</li>)}</ul></td> */}
                             <td><ul>{recipe.method.map(technique => <li>{technique}</li>)}</ul></td>
                             <td>{recipe.servings}</td>
                             <td>{convertDuration(recipe.prepTime)}</td>
@@ -192,7 +352,8 @@ const RecipeBookTableofContentsComponent = () => {
                 }
 
             </tbody>
-        </table>
+        </table> */}
+        <br/>
     </div>
   )
 

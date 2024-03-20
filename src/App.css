@@ -85,3 +85,10 @@
     justify-content: flex-end;
     justify-items: flex-end;
 } */
+
+.medText {
+    /* font-size:larger; */
+    font-size: xx-large;
+    /* font-size: medium; */
+    text-decoration: none;
+}

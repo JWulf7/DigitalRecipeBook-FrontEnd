@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import CreateRecipeComponent from './components/CreateRecipeComponent'
 import RecipeComponent from './components/RecipeComponent'
 import UpdateRecipeComponent from './components/UpdateRecipeComponent'
+import RecipeBookTableofContentsComponent from './components/RecipeBookTableofContentsComponent'
 
 function App() {
 
@@ -16,8 +17,10 @@ function App() {
       <BrowserRouter>
         <HeaderComponent/>
           <Routes>
+            {/* // http://localhost:3000
+            <Route path='/' element = {<ListRecipeComponent/>}></Route> */}
             {/* // http://localhost:3000 */}
-            <Route path='/' element = {<ListRecipeComponent/>}></Route>
+            <Route path='/' element = {<RecipeBookTableofContentsComponent/>}></Route>
             {/* // http://localhost:3000/recipes */}
             <Route path='/recipes' element = {<ListRecipeComponent/>}></Route>
             {/* // http://localhost:3000/add-recipe */}
