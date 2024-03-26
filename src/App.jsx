@@ -7,6 +7,7 @@ import CreateRecipeComponent from './components/CreateRecipeComponent'
 import RecipeComponent from './components/RecipeComponent'
 import UpdateRecipeComponent from './components/UpdateRecipeComponent'
 import RecipeBookTableofContentsComponent from './components/RecipeBookTableofContentsComponent'
+import CategoryComponent from './components/CategoryComponent'
 
 function App() {
 
@@ -29,6 +30,8 @@ function App() {
             <Route path='/recipe/:name' element = {<RecipeComponent/>}></Route>
             {/* // http://localhost:3000/recipes/getRecipe/{name} */}
             <Route path='/recipe/:name/update' element = {<UpdateRecipeComponent/>}></Route>
+            {/* // http://localhost:3000/category/{name} */}
+            <Route path='/category/:name' element = {<CategoryComponent/>}></Route>
 
 
 

@@ -127,6 +127,14 @@ const RecipeBookTableofContentsComponent = () => {
         navigator('/recipe/:'+name)
     }
 
+    function gotoIndex() {
+        navigator('/recipes');
+    }
+
+    function gotoCategory(name) {
+        navigator('/category/:' + name)
+    }
+
 
 
     function categoryLinks(category : string) {
@@ -136,7 +144,9 @@ const RecipeBookTableofContentsComponent = () => {
         console.log(category);
         return (
             <>
-
+                <div key={category.concat("LinkDiv")}>
+                    <Link to={"/category/"+category}>{category}'s Page</Link>
+                </div>
             {(recipes).map((eachRecipe, index) => {
                 console.log("iterating through eachRecipe; eachRecipe = ->");
                 console.log(eachRecipe);
@@ -183,6 +193,7 @@ const RecipeBookTableofContentsComponent = () => {
                             {/* <div className="collapse" id="collapseExample"> */}
                             <div className="collapse" id={("collapse").concat(eachCategory)}>
                                 {/* {categoryLinks("Bread")} */}
+
                                 {categoryLinks(eachCategory)}
                             </div>
                         </div>
@@ -228,22 +239,23 @@ const RecipeBookTableofContentsComponent = () => {
   return (
     <div className='container'>
 
-        <h2 className='text-center'>Digital RecipeBook</h2>
+        {/* <h2 className='text-center'>Digital RecipeBook</h2> */}
         <h2 className='text-center'>Table of Contents</h2>
         <div>
             <div className="row">
                 <div className="col col-sm">
-                    <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
+                     <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>    {/* This button should expand all */}
                 </div>
                 <div className="col searchInputs">
-                    <input type="text" id="myInput" onChange={searchTable} placeholder="Keyword Search..." value={searchInput}/>
+                    {/* <input type="text" id="myInput" onChange={searchTable} placeholder="Keyword Search..." value={searchInput}/> */}
                     <br/>
                 </div>
                     
                 <div className="col"><br/></div>
             
                 <div className="col col-sm d-flex justify-content-end">
-                    <RecipeNameSearchBar placeholder="Enter a Recipe Name" data={recipes}/>  
+                    {/* <RecipeNameSearchBar placeholder="Enter a Recipe Name" data={recipes}/>   */}
+                    <button className='btn btn-primary mb-2' onClick={gotoIndex}>Index</button>
                 </div>
             </div>
         </div>

@@ -214,6 +214,10 @@ const ListRecipeComponent = () => {
         navigator('/recipe/:'+name)
     }
 
+    function gotoTableofContents() {
+        navigator('/')
+    }
+
   return (
     <div className='container'>
 
@@ -224,14 +228,19 @@ const ListRecipeComponent = () => {
                     <button className='btn btn-primary mb-2' onClick={addNewRecipe}>Add Recipe</button>
                 </div>
                 <div className="col searchInputs">
-                    <input type="text" id="myInput" onChange={searchTable} placeholder="Keyword Search..." value={searchInput}/>
+                    <input type="text" id="myInput" onChange={searchTable} placeholder="Keyword Filter Search..." value={searchInput}/>
                     <br/>
                 </div>
                     
                 <div className="col"><br/></div>
             
                 <div className="col col-sm d-flex justify-content-end">
-                    <RecipeNameSearchBar placeholder="Enter a Recipe Name" data={recipes}/>  
+                    <RecipeNameSearchBar placeholder="Enter a Recipe Name" data={recipes}/>
+                      
+                </div>
+
+                <div className="col col-sm">
+                    <button className='btn btn-primary mb-2' onClick={gotoTableofContents}>Table of Contents</button>
                 </div>
             </div>
         </div>
