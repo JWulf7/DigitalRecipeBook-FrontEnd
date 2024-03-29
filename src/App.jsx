@@ -8,6 +8,8 @@ import RecipeComponent from './components/RecipeComponent'
 import UpdateRecipeComponent from './components/UpdateRecipeComponent'
 import RecipeBookTableofContentsComponent from './components/RecipeBookTableofContentsComponent'
 import CategoryComponent from './components/CategoryComponent'
+import MainView from './components/Calendar/MainView'
+import UpdateScheduleComponent from './components/Calendar/UpdateScheduleComponent'
 
 function App() {
 
@@ -32,6 +34,11 @@ function App() {
             <Route path='/recipe/:name/update' element = {<UpdateRecipeComponent/>}></Route>
             {/* // http://localhost:3000/category/{name} */}
             <Route path='/category/:name' element = {<CategoryComponent/>}></Route>
+            {/* CALENDAR  */}
+            {/* // http://localhost:3000/calendar */}
+            <Route path='/calendar' element = {<MainView/>}></Route>
+            {/* // http://localhost:3000/calendar/update/{date} */}
+            <Route path='/calendar/update/:date' element = {<UpdateScheduleComponent/>}></Route>
 
 
 
