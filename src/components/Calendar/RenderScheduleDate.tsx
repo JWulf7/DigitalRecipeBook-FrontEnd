@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 interface Props {
     date: string;
-    schedule: Schedule;
+    schedule?: Schedule;
 }
 
 interface Schedule {
@@ -44,21 +44,16 @@ const RenderScheduleDate = ({date, schedule} : Props) => {
         return (
             <>
                 {
-                    schedule.todaysPlannedMeals.map((meal, index) =>
+                    schedule?.todaysPlannedMeals.map((meal, index) =>
                     { if(mealName == meal.meal)
                         return(
                             <>
-                                {/* <div className="mealCategory">{mealName}</div>
-                                <div className='mealName'>{meal.name}</div> */}
                                 <span className="mealCategory" key={"mealCategorykey"+mealName}>{mealName}</span>
                                 <span className='mealName' key={"mealNameKey"+meal.name}>   : {meal.name}</span>
                                 <ul>
                                 {meal.menu.map((mealComponent, index) =>
                                     {return(
                                         <>
-                                            {/* <div className='menuItem'>{mealComponent.name}</div> */}
-                                            {/* <li className='menuItem' key={"menuItemKey"+index}>{mealComponent.name}</li>
-                                            <Link to={"/recipe/"+mealComponent?.name}>{mealComponent.name}</Link> */}
                                             <li className='menuItem' key={"menuItemKey"+index}>
                                                 <Link to={"/recipe/"+mealComponent?.name}>{mealComponent.name}</Link>
                                             </li>
