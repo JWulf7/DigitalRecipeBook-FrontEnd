@@ -92,3 +92,21 @@
     /* font-size: medium; */
     text-decoration: none;
 }
+
+.mealCategory {
+    font-size: larger;
+    font-weight: bold;
+    text-decoration:underline;
+}
+
+.mealName {
+    font-weight: 500;
+}
+
+.menuItem {
+
+}
+
+.scheduleTitle {
+    text-align: center;
+}

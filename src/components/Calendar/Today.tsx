@@ -55,7 +55,7 @@ const Today : React.FC = () => {
     }
 
 
-    {(schedule?.date && schedule)
+    {if(schedule?.date && schedule)
     return (
 
         <>
@@ -74,9 +74,8 @@ const Today : React.FC = () => {
                 {/* <div className="col"></div> */}
                 <div className="col d-flex justify-content-center">
                     <div className="card">
-                        <h4>Today's Schedule:</h4>
+                        <h4 className='scheduleTitle'>Today's Schedule:</h4>
                         <div className="card-body">
-                            card body
                             <RenderScheduleDate date={schedule?.date!} schedule={schedule}></RenderScheduleDate>
                         </div>
 
