@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getScheduleToday } from '../../services/CalendarService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 
@@ -57,7 +57,11 @@ const RenderScheduleDate = ({date, schedule} : Props) => {
                                     {return(
                                         <>
                                             {/* <div className='menuItem'>{mealComponent.name}</div> */}
-                                            <li className='menuItem' key={"menuItemKey"+index}>{mealComponent.name}</li>
+                                            {/* <li className='menuItem' key={"menuItemKey"+index}>{mealComponent.name}</li>
+                                            <Link to={"/recipe/"+mealComponent?.name}>{mealComponent.name}</Link> */}
+                                            <li className='menuItem' key={"menuItemKey"+index}>
+                                                <Link to={"/recipe/"+mealComponent?.name}>{mealComponent.name}</Link>
+                                            </li>
                                         </>
                                     )}
                                 )}
